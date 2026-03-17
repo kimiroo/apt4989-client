@@ -7,18 +7,22 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Link
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.VpnKey
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -75,6 +79,11 @@ fun SettingsScreen(
     val notificationAccessGranted by viewModel.notificationAccessGranted.collectAsState()
     val overlayGranted by viewModel.overlayGranted.collectAsState()
     val batteryGranted by viewModel.batteryGranted.collectAsState()
+
+    // Default overlay settings values
+    val defaultShowOverlay = true
+    val defaultOverlayY = 500f
+    val defaultMaxHeight = 400f
 
     // Settings
     var showConfirmDialog by remember { mutableStateOf(false) }
@@ -222,6 +231,31 @@ fun SettingsScreen(
                         },
                         valueRange = 100f..800f
                     )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    // Reset Button
+                    Button(
+                        onClick = {
+                            // Reset all states to default values
+                            showOverlay = defaultShowOverlay
+                            overlayYOffset = defaultOverlayY
+                            maxOverlayHeight = defaultMaxHeight
+                        },
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                            contentColor = MaterialTheme.colorScheme.onSecondaryContainer
+                        )
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Refresh,
+                            contentDescription = null,
+                            modifier = Modifier.size(ButtonDefaults.IconSize)
+                        )
+                        Spacer(Modifier.size(ButtonDefaults.IconSpacing))
+                        Text(stringResource(R.string.btn_reset_overlay_settings))
+                    }
                 }
 
                 // --- Section 3: Permissions ---

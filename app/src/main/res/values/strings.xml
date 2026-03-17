@@ -61,6 +61,7 @@
     <string name="label_show_overlay">오버레이 표시 설정</string>
     <string name="label_y_offset">시작 위치 (Y축 Offset): %1$ddp</string>
     <string name="label_max_height">최대 높이: %1$ddp</string>
+    <string name="btn_reset_overlay_settings">오버레이 설정 초기화</string>
 
     <string name="title_permissions">권한 관리</string>
     <string name="label_general_permissions">일반 권한</string>
