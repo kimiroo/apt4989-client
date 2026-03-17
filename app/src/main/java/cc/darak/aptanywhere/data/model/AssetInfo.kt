@@ -1,34 +1,37 @@
 package cc.darak.aptanywhere.data.model
 
 import android.os.Parcelable
+import cc.darak.aptanywhere.data.model.adapter.StringToNullAdapter
+import com.google.gson.annotations.JsonAdapter
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class AssetInfo(
-    val complex: String = "(정보 없음)",
-    val bld: String = "(정보 없음)",
-    val unit: String = "(정보 없음)",
-    val area: String = "(정보 없음)",
-    val type: String = "(정보 없음)",
+    val complex: String = "",
+    val bld: String = "",
+    val unit: String = "",
 
-    val ownerName: String = "(정보 없음)",
-    val ownerNumber: String = "(정보 없음)",
+    @JsonAdapter(StringToNullAdapter::class) val area: String? = null,
+    @JsonAdapter(StringToNullAdapter::class) val type: String? = null,
 
-    val tenantName: String = "(정보 없음)",
-    val tenantNumber: String = "(정보 없음)",
+    @JsonAdapter(StringToNullAdapter::class) val ownerName: String? = null,
+    @JsonAdapter(StringToNullAdapter::class) val ownerNumber: String? = null,
 
-    val saleState: String = "(정보 없음)",
-    val salePrice: String = "(정보 없음)",
+    @JsonAdapter(StringToNullAdapter::class) val tenantName: String? = null,
+    @JsonAdapter(StringToNullAdapter::class) val tenantNumber: String? = null,
 
-    val jeonseState: String = "(정보 없음)",
-    val jeonsePrice: String = "(정보 없음)",
+    @JsonAdapter(StringToNullAdapter::class) val saleState: String? = null,
+    @JsonAdapter(StringToNullAdapter::class) val salePrice: String? = null,
 
-    val rentState: String = "(정보 없음)",
-    val rentPrice: String = "(정보 없음)",
-    val rentDeposits: String = "(정보 없음)",
+    @JsonAdapter(StringToNullAdapter::class) val jeonseState: String? = null,
+    @JsonAdapter(StringToNullAdapter::class) val jeonsePrice: String? = null,
 
-    val expirationDate: String = "(정보 없음)",
-    val features: String = "(정보 없음)",
-    val consultLog: String = "(정보 없음)",
-    val remarks: String = "(정보 없음)",
+    @JsonAdapter(StringToNullAdapter::class) val rentState: String? = null,
+    @JsonAdapter(StringToNullAdapter::class) val rentPrice: String? = null,
+    @JsonAdapter(StringToNullAdapter::class) val rentDeposits: String? = null,
+
+    @JsonAdapter(StringToNullAdapter::class) val expirationDate: String? = null,
+    @JsonAdapter(StringToNullAdapter::class) val features: String? = null,
+    @JsonAdapter(StringToNullAdapter::class) val consultLog: String? = null,
+    @JsonAdapter(StringToNullAdapter::class) val remarks: String? = null,
 ) : Parcelable

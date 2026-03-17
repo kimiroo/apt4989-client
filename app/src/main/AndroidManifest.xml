@@ -41,7 +41,7 @@
         <activity android:name=".ui.init.InitActivity" />
         <activity android:name=".ui.search.lookup.LookupActivity" />
         <activity android:name=".ui.search.result.ResultListActivity" />
-        <!--<activity android:name=".ui.search.AssetDetailActivity" />-->
+        <activity android:name=".ui.search.detail.AssetDetailActivity" />
         <activity android:name=".ui.settings.SettingsActivity" />
 
         <receiver android:name=".receiver.CallReceiver" android:exported="true">

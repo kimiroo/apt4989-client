@@ -56,7 +56,7 @@ fun AssetItem(
                 )
                 Spacer(modifier = Modifier.height(6.dp))
                 Text(
-                    text = "${info.area} (${info.type})",
+                    text = "${info.area} / ${info.type}",
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.secondary
                 )
@@ -70,14 +70,14 @@ fun AssetItem(
                 // Owner Info
                 PersonInfoColumn(
                     label = stringResource(R.string.label_owner),
-                    name = info.ownerName,
+                    name = info.ownerName ?: stringResource(R.string.label_no_data),
                     modifier = Modifier.weight(1f)
                 )
 
                 // Tenant Info
                 PersonInfoColumn(
                     label = stringResource(R.string.label_tenant),
-                    name = info.tenantName,
+                    name = info.tenantName ?: stringResource(R.string.label_no_data),
                     modifier = Modifier.weight(1f)
                 )
             }

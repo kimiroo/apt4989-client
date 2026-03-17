@@ -103,16 +103,16 @@ fun OverlayCard(
                             } else {
                                 stringResource(R.string.label_tenant)
                             },
-                            isExpanded = (index == 0 && state.infoList.size == 1), // 첫 번째 항목만 자동 펼침
+                            isExpanded = (index == 0 && state.infoList.size == 1), // Auto expand if it's the only item
                             content = {
                                 ColumnedDetailRow(
-                                    stringResource(R.string.label_area), info.area,
-                                    stringResource(R.string.label_type), info.type,
-                                    stringResource(R.string.label_owner_name), info.ownerName,
-                                    stringResource(R.string.label_tenant_name), info.tenantName
+                                    stringResource(R.string.label_area), info.area ?: stringResource(R.string.label_no_data),
+                                    stringResource(R.string.label_type), info.type ?: stringResource(R.string.label_no_data),
+                                    stringResource(R.string.label_owner_name), info.ownerName ?: stringResource(R.string.label_no_data),
+                                    stringResource(R.string.label_tenant_name), info.tenantName ?: stringResource(R.string.label_no_data)
                                 )
-                                DetailRow(stringResource(R.string.label_remarks), info.remarks)
-                                DetailRow(stringResource(R.string.label_consult_log), info.consultLog)
+                                DetailRow(stringResource(R.string.label_remarks), info.remarks ?: stringResource(R.string.label_no_data))
+                                DetailRow(stringResource(R.string.label_consult_log), info.consultLog ?: stringResource(R.string.label_no_data))
                             }
                         )
 

@@ -6,12 +6,15 @@
     <string name="label_tenant">임차인</string>
     <string name="label_area">크기</string>
     <string name="label_type">타입</string>
+    <string name="label_name">이름</string>
+    <string name="label_contact">연락처</string>
     <string name="label_owner_name">임대인 이름</string>
     <string name="label_tenant_name">임차인 이름</string>
     <string name="label_remarks">비고</string>
     <string name="label_consult_log">상담 기록</string>
     <string name="label_not_selected">(선택 안함)</string>
     <string name="label_blank">(공백)</string>
+    <string name="label_no_data">(정보 없음)</string>
     <string name="error_occurred">오류 발생:\n%1$s</string>
 
     <!-- Buttons -->
@@ -45,13 +48,28 @@
     <string name="label_keyword_placeholder">이름, 메모 등</string>
     <string name="label_bld_required">동 (필수)</string>
     <string name="label_bld_optional">동 (선택)</string>
-    <string name="label_unit_optional">동 (선택)</string>
+    <string name="label_unit_optional">호수 (선택)</string>
     <string name="dialog_title_no_result">검색 결과 없음</string>
     <string name="dialog_message_no_result">검색 결과가 없습니다.</string>
     <string name="btn_lookup">조회하기</string>
 
     <!-- Search Result -->
     <string name="search_result_row_title">%1$s동 %2$s호</string>
+
+    <!-- AssetDetail -->
+    <string name="asset_detail_title">%1$s %2$s동 %3$s호</string>
+    <string name="asset_detail_bld_unit">%1$s동 %2$s호</string>
+    <string name="asset_detail_area_type">%1$s (타입: %2$s)</string>
+    <string name="label_sale">매매</string>
+    <string name="label_jeonse">전세</string>
+    <string name="label_rent">월세</string>
+    <string name="label_state">상태</string>
+    <string name="label_sale_price">매매가</string>
+    <string name="label_jeonse_price">전세가</string>
+    <string name="label_rent_price">월세</string>
+    <string name="label_rent_deposit">보증금</string>
+    <string name="label_expiration_date">만기일</string>
+    <string name="label_features">옵션</string>
 
     <!-- Settings -->
     <string name="toast_settings_saved">설정이 저장되었습니다.</string>

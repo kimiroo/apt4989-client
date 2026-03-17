@@ -18,36 +18,46 @@ data class AssetDto(
 )
 
 /**
+ * Extension function to convert blank strings (empty, spaces, or only newlines) to null.
+ */
+fun String?.nullIfBlank(): String? = this?.takeIf { it.isNotBlank() }
+
+/**
  * Extension function to convert API DTO to App Domain model
  */
 fun AssetDto.toDomain(): AssetInfo {
     return AssetInfo(
-        complex = this.complex ?: "(정보 없음)",
-        bld = this.bld ?: "(정보 없음)",
-        unit = this.unit ?: "(정보 없음)",
-        area = this.area ?: "(정보 없음)",
-        type = this.type ?: "(정보 없음)",
+        complex = this.complex ?: "",
+        bld = this.bld ?: "",
+        unit = this.unit ?: "",
 
-        ownerName = this.owner?.name ?: "(정보 없음)",
-        ownerNumber = this.owner?.number ?: "(정보 없음)",
+        area = this.area.nullIfBlank(),
+        type = this.type.nullIfBlank(),
 
-        tenantName = this.tenant?.name ?: "(정보 없음)",
-        tenantNumber = this.tenant?.number ?: "(정보 없음)",
+        ownerName = this.owner?.name.nullIfBlank(),
+        ownerNumber = this.owner?.number.nullIfBlank(),
+        tenantName = this.tenant?.name.nullIfBlank(),
+        tenantNumber = this.tenant?.number.nullIfBlank(),
 
-        saleState = this.listing?.sale?.state ?: "(정보 없음)",
-        salePrice = this.listing?.sale?.price ?: "(정보 없음)",
+        saleState = this.listing?.sale?.state.nullIfBlank(),
+        salePrice = this.listing?.sale?.price.nullIfBlank(),
+        jeonseState = this.listing?.jeonse?.state.nullIfBlank(),
+        jeonsePrice = this.listing?.jeonse?.price.nullIfBlank(),
 
-        jeonseState = this.listing?.jeonse?.price ?: "(정보 없음)",
-        jeonsePrice = this.listing?.jeonse?.price ?: "(정보 없음)",
+        rentState = this.listing?.rent?.state.nullIfBlank(),
+        rentPrice = this.listing?.rent?.prices.nullIfBlank(),
+        rentDeposits = this.listing?.rent?.deposits.nullIfBlank(),
 
-        rentState = this.listing?.rent?.state ?: "(정보 없음)",
-        rentPrice = this.listing?.rent?.prices ?: "(정보 없음)",
-        rentDeposits = this.listing?.rent?.deposits ?: "(정보 없음)",
+        expirationDate = this.expirationDate.nullIfBlank(),
 
-        expirationDate = this.expirationDate ?: "(정보 없음)",
-        features = this.features?.joinToString("\n") ?: "(정보 없음)",
-        consultLog = this.consultLog ?: "(정보 없음)",
-        remarks = this.remarks ?: "(정보 없음)"
+        // Check both items in the list and final result
+        features = this.features
+            ?.filter { it.isNotBlank() }
+            ?.joinToString("\n")
+            .nullIfBlank(),
+
+        consultLog = this.consultLog.nullIfBlank(),
+        remarks = this.remarks.nullIfBlank()
     )
 }
 

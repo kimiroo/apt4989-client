@@ -12,7 +12,7 @@ import cc.darak.aptanywhere.data.repository.AssetRepository
 
 class LookupViewModel() : ViewModel() {
 
-    val repository = AssetRepository()
+        val repository = AssetRepository()
 
     var isLoading by mutableStateOf(true)
         private set
