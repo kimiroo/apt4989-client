@@ -39,9 +39,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat.getString
 import androidx.lifecycle.viewmodel.compose.viewModel
 import cc.darak.aptanywhere.App
+import cc.darak.aptanywhere.R
 import cc.darak.aptanywhere.ui.components.CommonLayout
 import cc.darak.aptanywhere.ui.components.PermissionCard
 import cc.darak.aptanywhere.ui.components.settings.SettingsSection
@@ -76,16 +79,30 @@ fun SettingsScreen(
     // Settings
     var showConfirmDialog by remember { mutableStateOf(false) }
     val saveSettings = {
-        PreferencesHelper.saveApiSettings(App.instance, apiUrl.trim(), apiKey.trim())
-        PreferencesHelper.saveOverlaySettings(App.instance, showOverlay, overlayYOffset.toInt(), maxOverlayHeight.toInt())
-        Toast.makeText(context, "설정이 저장되었습니다.", Toast.LENGTH_SHORT).show()
+        PreferencesHelper.saveApiSettings(
+            App.instance,
+            apiUrl.trim(),
+            apiKey.trim()
+        )
+        PreferencesHelper.saveOverlaySettings(
+            App.instance,
+            showOverlay,
+            overlayYOffset.toInt(),
+            maxOverlayHeight.toInt()
+        )
+        Toast.makeText(
+            context,
+            getString(context, R.string.toast_settings_saved),
+            Toast.LENGTH_SHORT
+        ).show()
+
         onBack()
     }
 
     // Launcher for general permissions (READ_PHONE_STATE, etc.)
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestMultiplePermissions()
-    ) { results ->
+    ) { _ ->
         viewModel.checkAllPermissions(context) // Re-check after request
     }
 
@@ -110,7 +127,7 @@ fun SettingsScreen(
     }
 
     CommonLayout(
-        title = "설정",
+        title = stringResource(R.string.title_settings),
         showBack = true,
         onBackClick = onBack
     ) {
@@ -124,17 +141,23 @@ fun SettingsScreen(
                 verticalArrangement = Arrangement.spacedBy(24.dp)
             ) {
                 // --- Section 1: Server Connection ---
-                SettingsSection(title = "API 서버 설정") {
+                SettingsSection(title = stringResource(R.string.title_api_settings)) {
                     OutlinedTextField(
                         value = apiUrl,
                         onValueChange = { apiUrl = it },
-                        label = { Text("API 서버 주소") },
+                        label = { Text(stringResource(R.string.label_api_server)) },
                         placeholder = { Text("https://example.com") },
                         supportingText = {
                             if (apiUrl.isNotEmpty() && !isUrlValid) {
-                                Text("유효한 HTTP/HTTPS 주소를 입력하세요.", color = MaterialTheme.colorScheme.error)
+                                Text(
+                                    stringResource(R.string.help_api_server_enter_valid),
+                                    color = MaterialTheme.colorScheme.error
+                                )
                             } else {
-                                Text("호스트명까지만 입력하세요.", color = MaterialTheme.colorScheme.primary)
+                                Text(
+                                    stringResource(R.string.help_api_server_enter_hostname),
+                                    color = MaterialTheme.colorScheme.primary
+                                )
                             }
                         },
                         modifier = Modifier.fillMaxWidth(),
@@ -144,15 +167,15 @@ fun SettingsScreen(
                     OutlinedTextField(
                         value = apiKey,
                         onValueChange = { apiKey = it },
-                        label = { Text("API 접근 키") },
+                        label = { Text(stringResource(R.string.label_api_token)) },
                         placeholder = {
-                            Text(if (isKeySaved) "verySECRETapiKEY" else "새로운 API 키 입력")
+                            Text(if (isKeySaved) "****************" else "verySECUREapiKEY1234")
                         },
                         supportingText = {
                             if (apiKey.isNotEmpty() && !isApiKeyValid) {
-                                Text("API 키는 16자 이상의 영문/숫자여야 합니다.", color = MaterialTheme.colorScheme.error)
+                                Text(stringResource(R.string.help_api_token_length), color = MaterialTheme.colorScheme.error)
                             } else {
-                                Text("기존 키가 덮어씌워집니다. 변경시에만 입력하세요.", color = MaterialTheme.colorScheme.primary)
+                                Text(stringResource(R.string.help_api_token_overwrite), color = MaterialTheme.colorScheme.primary)
                             }
                         },
                         modifier = Modifier.fillMaxWidth(),
@@ -162,7 +185,7 @@ fun SettingsScreen(
                 }
 
                 // --- Section 2: Overlay Customization ---
-                SettingsSection(title = "오버레이 표시 설정") {
+                SettingsSection(title = stringResource(R.string.title_overlay_settings)) {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -170,7 +193,7 @@ fun SettingsScreen(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        Text("전화 및 문자 수신시 오버레이 표시")
+                        Text(stringResource(R.string.label_show_overlay))
                         Switch(
                             checked = showOverlay, // Your boolean state
                             onCheckedChange = {
@@ -181,7 +204,7 @@ fun SettingsScreen(
                     }
 
                     // 1. Display as Int using toInt()
-                    Text("시작 위치 (Y축 Offset): ${overlayYOffset.toInt()}dp")
+                    Text(stringResource(R.string.label_y_offset, overlayYOffset.toInt()))
                     Slider(
                         value = overlayYOffset,
                         onValueChange = {
@@ -191,7 +214,7 @@ fun SettingsScreen(
                         valueRange = 0f..1000f
                     )
 
-                    Text("최대 높이: ${maxOverlayHeight.toInt()}dp")
+                    Text(stringResource(R.string.label_max_height, maxOverlayHeight.toInt()))
                     Slider(
                         value = maxOverlayHeight,
                         onValueChange = {
@@ -202,35 +225,35 @@ fun SettingsScreen(
                 }
 
                 // --- Section 3: Permissions ---
-                SettingsSection(title = "권한 관리") {
+                SettingsSection(title = stringResource(R.string.title_permissions)) {
                     // 1. General Permissions
                     PermissionCard(
-                        title = "일반 권한",
-                        description = "알림을 띄우거나 수신된 전화번호를 가져오는데 필요합니다.",
+                        title = stringResource(R.string.label_general_permissions),
+                        description = stringResource(R.string.description_general_permissions),
                         isGranted = generalGranted,
                         onClick = { launcher.launch(viewModel.permissionsList) }
                     )
 
                     // 2. ChannelID Access Permission
                     PermissionCard(
-                        title = "알림 접근 권한",
-                        description = "문자 등 알림을 감지하여 정보를 조회하기 위해 필요합니다.",
+                        title = stringResource(R.string.label_notification_access),
+                        description = stringResource(R.string.description_notification_access),
                         isGranted = notificationAccessGranted,
                         onClick = { viewModel.requestNotificationAccessPermission(context) }
                     )
 
                     // 3. Overlay Permission
                     PermissionCard(
-                        title = "오버레이 권한",
-                        description = "조회 결과를 오버레이로 띄우는데 필요합니다.",
+                        title = stringResource(R.string.label_overlay_permission),
+                        description = stringResource(R.string.description_overlay_permission),
                         isGranted = overlayGranted,
                         onClick = { viewModel.requestOverlayPermission(context) }
                     )
 
                     // 4. Battery Optimization
                     PermissionCard(
-                        title = "배터리 권한",
-                        description = "백그라운드에서 모니터링이 끊기지 않게 합니다.",
+                        title = stringResource(R.string.label_battery_granted),
+                        description = stringResource(R.string.description_battery_granted),
                         isGranted = batteryGranted,
                         onClick = { viewModel.requestIgnoreBatteryOptimizations(context) }
                     )
@@ -245,10 +268,24 @@ fun SettingsScreen(
             ) {
                 Button(
                     onClick = {
-                        // 2. Check if apiKey is not empty to show dialog
-                        if (apiKey.trim().isNotEmpty()) {
-                            showConfirmDialog = true
-                        } else {
+                        val trimmedKey = apiKey.trim()
+
+                        // 1. Validate URL first
+                        if (!isUrlValid) {
+                            Toast.makeText(context, R.string.not_valid_url, Toast.LENGTH_SHORT).show()
+                        }
+                        // 2. If key is provided, validate it and show confirmation
+                        else if (trimmedKey.isNotEmpty()) {
+                            if (!isApiKeyValid) {
+                                // Key is provided but not valid
+                                Toast.makeText(context, R.string.not_valid_key, Toast.LENGTH_SHORT).show()
+                            } else {
+                                // Key is provided and valid
+                                showConfirmDialog = true
+                            }
+                        }
+                        // 3. If key is empty (no update), save settings directly
+                        else {
                             saveSettings()
                         }
                     },
@@ -262,8 +299,8 @@ fun SettingsScreen(
             if (showConfirmDialog) {
                 AlertDialog(
                     onDismissRequest = { showConfirmDialog = false },
-                    title = { Text("API 키 변경 확인") },
-                    text = { Text("API 키가 변경됩니다. 계속하시겠습니까?") },
+                    title = { Text(stringResource(R.string.title_api_token_overwrite)) },
+                    text = { Text(stringResource(R.string.message_api_token_overwrite)) },
                     confirmButton = {
                         TextButton(
                             onClick = {
@@ -271,12 +308,12 @@ fun SettingsScreen(
                                 saveSettings() // Execute the save logic
                             }
                         ) {
-                            Text("계속")
+                            Text(stringResource(R.string.btn_continue))
                         }
                     },
                     dismissButton = {
                         TextButton(onClick = { showConfirmDialog = false }) {
-                            Text("취소")
+                            Text(stringResource(R.string.btn_cancel))
                         }
                     }
                 )

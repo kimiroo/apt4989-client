@@ -18,8 +18,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import cc.darak.aptanywhere.R
 
 @Composable
 fun PermissionCard(
@@ -43,7 +45,11 @@ fun PermissionCard(
             Column(modifier = Modifier.weight(1f)) {
                 // Status indicator
                 Text(
-                    text = if (isGranted) "허용됨" else "허용 필요",
+                    text = if (isGranted) {
+                        stringResource(R.string.label_granted)
+                    } else {
+                        stringResource(R.string.label_need_grant)
+                    },
                     color = if (isGranted) Color(0xFF4CAF50) else Color.Red,
                     style = MaterialTheme.typography.labelSmall
                 )
@@ -69,7 +75,11 @@ fun PermissionCard(
                 shape = RoundedCornerShape(8.dp),
                 contentPadding = PaddingValues(horizontal = 16.dp)
             ) {
-                Text(if (isGranted) "완료" else "설정")
+                Text(if (isGranted) {
+                    stringResource(R.string.btn_complete)
+                } else {
+                    stringResource(R.string.btn_allow)
+                })
             }
         }
     }

@@ -10,16 +10,85 @@
     <string name="label_tenant_name">임차인 이름</string>
     <string name="label_remarks">비고</string>
     <string name="label_consult_log">상담 기록</string>
+    <string name="label_not_selected">(선택 안함)</string>
+    <string name="label_blank">(공백)</string>
+    <string name="error_occurred">오류 발생:\n%1$s</string>
 
     <!-- Buttons -->
-    <string name="close">닫기</string>
+    <string name="btn_close">닫기</string>
+    <string name="btn_back">뒤로 가기</string>
+    <string name="btn_continue">뒤로 가기</string>
+    <string name="btn_cancel">뒤로 가기</string>
 
     <!-- Overlay -->
     <string name="loading_data">데이터를 불러오는 중…</string>
     <string name="no_result">검색 결과가 없습니다.</string>
-    <string name="error_occurred">오류 발생:\n%1$s</string>
     <string name="search_result">(%1$d건 조회됨)</string>
     <string name="search_result_row_title">%1$s %2$s동 %3$s호</string>
+
+    <!-- Activity Names -->
+    <string name="title_lookup_phone">전화번호 조회</string>
+    <string name="title_lookup_keyword">전화번호 조회</string>
+    <string name="title_lookup_unit">동/호수 조회</string>
+    <string name="title_settings">설정</string>
+    <string name="title_init">초기 설정</string>
+
+    <!-- Lookup -->
+    <string name="loading_complex_list">단지 목록을 불러오는 중…</string>
+    <string name="label_complex_required">단지 선택 (필수)</string>
+    <string name="label_complex_optional">단지 선택 (선택)</string>
+    <string name="label_complex_not_se">단지 선택 (선택)</string>
+    <string name="label_phone_required">전화번호 (필수)</string>
+    <string name="label_keyword_required">키워드 (필수)</string>
+    <string name="label_keyword_placeholder">이름, 메모 등</string>
+    <string name="label_bld_required">동 (필수)</string>
+    <string name="label_bld_optional">동 (선택)</string>
+    <string name="label_unit_optional">동 (선택)</string>
+    <string name="btn_lookup">조회하기</string>
+
+    <!-- Settings -->
+    <string name="toast_settings_saved">설정이 저장되었습니다.</string>
+
+    <string name="title_api_settings">API 서버 설정</string>
+    <string name="label_api_server">API 서버</string>
+    <string name="help_api_server_enter_valid">유효한 HTTP/HTTPS 주소를 입력하세요.</string>
+    <string name="help_api_server_enter_hostname">호스트명까지만 입력하세요.</string>
+    <string name="label_api_token">API 접근 키</string>
+    <string name="help_api_token_length">API 키는 16자 이상의 영문/숫자여야 합니다.</string>
+    <string name="help_api_token_overwrite">기존 키가 덮어씌워집니다. 변경시에만 입력하세요.</string>
+
+    <string name="title_overlay_settings">오버레이 표시 설정</string>
+    <string name="label_show_overlay">오버레이 표시 설정</string>
+    <string name="label_y_offset">시작 위치 (Y축 Offset): %1$ddp</string>
+    <string name="label_max_height">최대 높이: %1$ddp</string>
+
+    <string name="title_permissions">권한 관리</string>
+    <string name="label_general_permissions">일반 권한</string>
+    <string name="label_notification_access">알림 접근 권한</string>
+    <string name="label_overlay_permission">오버레이 권한</string>
+    <string name="label_battery_granted">배터리 권한</string>
+    <string name="description_general_permissions">알림을 띄우거나 수신된 전화번호를 가져오는데 필요합니다.</string>
+    <string name="description_notification_access">문자 등 알림을 감지하여 정보를 조회하기 위해 필요합니다.</string>
+    <string name="description_overlay_permission">조회 결과를 오버레이로 띄우는데 필요합니다.</string>
+    <string name="description_battery_granted">백그라운드에서 모니터링이 끊기지 않게 합니다.</string>
+
+    <string name="title_api_token_overwrite">API 접근 키 변경 확인</string>
+    <string name="message_api_token_overwrite">API 접근 키가 변경됩니다. 계속하시겠습니까?</string>
+
+    <!-- Init -->
+    <string name="init_description">앱 사용을 위해 API 서버 정보와 필수 권한 허용이 필요합니다.</string>
+    <string name="init_required_permissions">필수 권한</string>
+    <string name="not_valid_url">API 주소를 올바르게 입력해주세요.</string>
+    <string name="not_valid_key">API 접근 키 형식이 올바르지 않습니다.</string>
+    <string name="permission_not_granted">모든 필수 권한을 허용해주세요.</string>
+    <string name="init_general_error">설정을 다시 확인해주세요.</string>
+    <string name="btn_start">시작하기</string>
+
+    <!-- Permission Card -->
+    <string name="label_granted">허용됨</string>
+    <string name="label_need_grant">허용 필요</string>
+    <string name="btn_complete">완료</string>
+    <string name="btn_allow">설정</string>
 
     <!-- Notification -->
     <string name="notification_overlay_service_name">오버레이 서비스</string>

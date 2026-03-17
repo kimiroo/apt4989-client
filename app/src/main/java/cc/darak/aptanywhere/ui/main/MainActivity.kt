@@ -6,6 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import cc.darak.aptanywhere.service.PhoneMonitorService
 import cc.darak.aptanywhere.ui.init.InitActivity
+import cc.darak.aptanywhere.ui.search.lookup.LookupActivity
 import cc.darak.aptanywhere.ui.settings.SettingsActivity
 import cc.darak.aptanywhere.ui.theme.AppTheme
 import cc.darak.aptanywhere.util.PreferencesHelper.isSetupComplete
@@ -26,10 +27,10 @@ class MainActivity : ComponentActivity() {
             AppTheme() {
                 MainScreen(
                     onNavigateToSearch = { type ->
-                        //val intent = Intent(this, SearchActivity::class.java).apply {
-                        //    putExtra("SEARCH_TYPE", type)
-                        //}
-                        //startActivity(intent)
+                        val intent = Intent(this, LookupActivity::class.java).apply {
+                            putExtra("SEARCH_TYPE", type)
+                        }
+                        startActivity(intent)
                     },
                     onNavigateToSettings = {
                         startActivity(Intent(this, SettingsActivity::class.java))

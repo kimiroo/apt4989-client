@@ -39,8 +39,8 @@
         </activity>
 
         <activity android:name=".ui.init.InitActivity" />
-        <!--<activity android:name=".ui.search.LookupActivity" />
-        <activity android:name=".ui.search.ResultListActivity" />
+        <activity android:name=".ui.search.lookup.LookupActivity" />
+        <!--<activity android:name=".ui.search.ResultListActivity" />
         <activity android:name=".ui.search.AssetDetailActivity" />-->
         <activity android:name=".ui.settings.SettingsActivity" />
 

@@ -27,9 +27,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat.getString
 import androidx.lifecycle.viewmodel.compose.viewModel
+import cc.darak.aptanywhere.R
 import cc.darak.aptanywhere.ui.components.CommonLayout
 import cc.darak.aptanywhere.ui.components.PermissionCard
 import cc.darak.aptanywhere.viewmodel.PermissionViewModel
@@ -76,7 +79,7 @@ fun SetupScreen(
     }
 
     CommonLayout(
-        title = "초기 설정",
+        title = stringResource(R.string.title_init),
         onBackClick = onBack
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
@@ -91,7 +94,7 @@ fun SetupScreen(
             ) {
                 // --- Info Section ---
                 Text(
-                    text = "앱 사용을 위해 API 서버 정보와 필수 권한 허용이 필요합니다.",
+                    text = stringResource(R.string.init_description),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold
                 )
@@ -101,7 +104,7 @@ fun SetupScreen(
 
                 // --- API Settings Section ---
                 Text(
-                    text = "API 설정",
+                    text = stringResource(R.string.title_api_settings),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold
                 )
@@ -109,16 +112,22 @@ fun SetupScreen(
                 OutlinedTextField(
                     value = apiUrl,
                     onValueChange = { apiUrl = it },
-                    label = { Text("API 서버 주소") },
+                    label = { Text(stringResource(R.string.label_api_server)) },
                     placeholder = { Text("https://example.com") },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true,
                     isError = apiUrl.isNotEmpty() && !isUrlValid, // Visual feedback for invalid URL
                     supportingText = {
                         if (apiUrl.isNotEmpty() && !isUrlValid) {
-                            Text("유효한 HTTP/HTTPS 주소를 입력하세요.", color = MaterialTheme.colorScheme.error)
+                            Text(
+                                stringResource(R.string.help_api_server_enter_valid),
+                                color = MaterialTheme.colorScheme.error
+                            )
                         } else {
-                            Text("호스트명까지만 입력하세요.", color = MaterialTheme.colorScheme.primary)
+                            Text(
+                                stringResource(R.string.help_api_server_enter_hostname),
+                                color = MaterialTheme.colorScheme.primary
+                            )
                         }
                     }
                 )
@@ -126,13 +135,16 @@ fun SetupScreen(
                 OutlinedTextField(
                     value = apiKey,
                     onValueChange = { apiKey = it },
-                    label = { Text("API 접근 키") },
+                    label = { Text(stringResource(R.string.label_api_token)) },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true,
                     isError = apiKey.isNotEmpty() && !isApiKeyValid,
                     supportingText = {
                         if (apiKey.isNotEmpty() && !isApiKeyValid) {
-                            Text("API 키는 16자 이상의 영문/숫자여야 합니다.", color = MaterialTheme.colorScheme.error)
+                            Text(
+                                stringResource(R.string.help_api_token_length),
+                                color = MaterialTheme.colorScheme.error
+                            )
                         }
                     }
                 )
@@ -142,39 +154,39 @@ fun SetupScreen(
 
                 // --- Permission Section ---
                 Text(
-                    text = "필수 권한",
+                    text = stringResource(R.string.init_required_permissions),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold
                 )
 
                 // 1. General Permissions (READ_PHONE_STATE, etc.)
                 PermissionCard(
-                    title = "일반 권한",
-                    description = "알림을 띄우거나 수신된 전화번호를 가져오는데 필요합니다.",
+                    title = stringResource(R.string.label_general_permissions),
+                    description = stringResource(R.string.description_general_permissions),
                     isGranted = generalGranted,
                     onClick = { launcher.launch(viewModel.permissionsList) }
                 )
 
                 // 2. ChannelID Access Permission
                 PermissionCard(
-                    title = "알림 접근 권한",
-                    description = "문자 등 알림을 감지하여 정보를 조회하기 위해 필요합니다.",
+                    title = stringResource(R.string.label_notification_access),
+                    description = stringResource(R.string.description_notification_access),
                     isGranted = notificationAccessGranted,
                     onClick = { viewModel.requestNotificationAccessPermission(context) }
                 )
 
                 // 3. Overlay Permission
                 PermissionCard(
-                    title = "오버레이 권한",
-                    description = "조회 결과를 오버레이로 띄우는데 필요합니다.",
+                    title = stringResource(R.string.label_overlay_permission),
+                    description = stringResource(R.string.description_overlay_permission),
                     isGranted = overlayGranted,
                     onClick = { viewModel.requestOverlayPermission(context) }
                 )
 
                 // 4. Battery Optimization
                 PermissionCard(
-                    title = "배터리 권한",
-                    description = "백그라운드에서 모니터링이 끊기지 않게 합니다.",
+                    title = stringResource(R.string.label_battery_granted),
+                    description = stringResource(R.string.description_battery_granted),
                     isGranted = batteryGranted,
                     onClick = { viewModel.requestIgnoreBatteryOptimizations(context) }
                 )
@@ -196,10 +208,10 @@ fun SetupScreen(
                             onComplete(apiUrl, apiKey)
                         } else {
                             val message = when {
-                                !isUrlValid -> "API 주소를 올바르게 입력해주세요."
-                                !isApiKeyValid -> "API 접근 키 형식이 올바르지 않습니다."
-                                !allPermissionsGranted -> "모든 필수 권한을 허용해주세요."
-                                else -> "설정을 다시 확인해주세요."
+                                !isUrlValid -> getString(context, R.string.not_valid_url)
+                                !isApiKeyValid -> getString(context, R.string.not_valid_key)
+                                !allPermissionsGranted -> getString(context, R.string.permission_not_granted)
+                                else -> getString(context, R.string.init_general_error)
                             }
                             android.widget.Toast.makeText(context, message, android.widget.Toast.LENGTH_SHORT).show()
                         }
@@ -211,7 +223,7 @@ fun SetupScreen(
                     shape = RoundedCornerShape(12.dp)
                 ) {
                     Text(
-                        text = "시작하기",
+                        text = stringResource(R.string.btn_start),
                         style = MaterialTheme.typography.titleMedium,
                         color = if (isSetupComplete) MaterialTheme.colorScheme.onPrimary
                         else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)

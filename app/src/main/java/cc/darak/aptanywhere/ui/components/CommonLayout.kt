@@ -37,19 +37,16 @@ fun CommonLayout(
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    // 너무 튀지 않으면서 본문과 경계를 지어주는 연한 회색/테마색
                     containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
                     titleContentColor = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             )
         }
     ) { innerPadding ->
-        // innerPadding에 상태표시줄/앱바 높이 정보가 들어있습니다.
-        // Surface나 Box로 감싸서 패딩을 적용해줍니다.
         Surface(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding), // 여기서 패딩 적용!
+                .padding(innerPadding),
             color = MaterialTheme.colorScheme.background
         ) {
             content(innerPadding)
