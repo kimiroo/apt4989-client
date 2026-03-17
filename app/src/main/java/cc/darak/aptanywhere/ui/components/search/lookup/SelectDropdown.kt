@@ -19,11 +19,12 @@ import cc.darak.aptanywhere.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ComplexSelectDropdown(
-    complexList: List<String>,
-    selectedComplex: String?, // String? to handle null (all/none)
+fun SelectDropdown(
+    optionList: List<String>,
+    selectedOption: String?, // String? to handle null (all/none)
+    label: String,
     isRequired: Boolean,
-    onComplexSelected: (String?) -> Unit
+    onOptionSelected: (String?) -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
 
@@ -34,13 +35,13 @@ fun ComplexSelectDropdown(
     ) {
         OutlinedTextField(
             // Display logic: null -> placeholder/empty string
-            value = selectedComplex ?: "",
+            value = selectedOption ?: "",
             onValueChange = {},
             readOnly = true,
             label = { Text(if (isRequired) {
-                stringResource(R.string.label_complex_required)
+                "$label (${stringResource(R.string.label_required)})"
             } else {
-                stringResource(R.string.label_complex_optional)
+                "$label (${stringResource(R.string.label_optional)})"
             }) },
             placeholder = { Text(stringResource(R.string.label_not_selected)) },
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
@@ -58,17 +59,17 @@ fun ComplexSelectDropdown(
                 DropdownMenuItem(
                     text = { Text(stringResource(R.string.label_not_selected)) },
                     onClick = {
-                        onComplexSelected(null) // Pass null explicitly
+                        onOptionSelected(null) // Pass null explicitly
                         expanded = false
                     }
                 )
             }
 
-            complexList.forEach { complexName ->
+            optionList.forEach { complexName ->
                 DropdownMenuItem(
                     text = { Text(complexName.ifEmpty { stringResource(R.string.label_blank) }) },
                     onClick = {
-                        onComplexSelected(complexName) // Pass the actual string (even if "")
+                        onOptionSelected(complexName) // Pass the actual string (even if "")
                         expanded = false
                     }
                 )

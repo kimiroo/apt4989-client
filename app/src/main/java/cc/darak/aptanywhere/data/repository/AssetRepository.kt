@@ -22,7 +22,8 @@ class AssetRepository {
         val apiKey = PreferencesHelper.getApiKey(App.instance)
 
         val newRequest = originalRequest.newBuilder()
-            .header("X-API-KEY", apiKey) // Use your server's expected header name
+            .header("Authorization", "Bearer $apiKey")
+            .header("Content-Type", "application/json")
             .build()
 
         chain.proceed(newRequest)
@@ -121,6 +122,21 @@ class AssetRepository {
     suspend fun fetchComplexList(): List<String> {
         val result = executeRequest<Array<String>>(
             path = "/api/v1/complexes"
+        )
+
+        // Sort alphabetically for better UX in Dropdowns
+        return result?.toList()?.sorted() ?: emptyList()
+    }
+
+    /**
+     * Fetch all available building names for a given complex from the server
+     */
+    suspend fun fetchBuildingList(complex: String): List<String> {
+        val params = mutableMapOf("complex" to complex)
+
+        val result = executeRequest<Array<String>>(
+            path = "/api/v1/complex/buildings",
+            params = params
         )
 
         // Sort alphabetically for better UX in Dropdowns

@@ -5,20 +5,31 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.setValue
+import cc.darak.aptanywhere.R
 import cc.darak.aptanywhere.data.model.AssetInfo
 import cc.darak.aptanywhere.data.model.SearchType
 import cc.darak.aptanywhere.data.repository.AssetRepository
 
 class LookupViewModel() : ViewModel() {
 
-        val repository = AssetRepository()
+    val repository = AssetRepository()
 
+    // For dynamically loading "loading messages"
+    var loadingResId by mutableIntStateOf(R.string.loading_default)
+        private set
+    var loadingArgs by mutableStateOf<String?>(null)
+        private set
+
+    // State variables
     var isLoading by mutableStateOf(true)
         private set
     var errorMessage by mutableStateOf<String?>(null)
         private set
     var complexList by mutableStateOf<List<String>>(emptyList())
+        private set
+    var buildingList by mutableStateOf<List<String>>(emptyList())
         private set
     var searchResults = mutableStateOf<List<AssetInfo>?>(null)
 
@@ -28,15 +39,38 @@ class LookupViewModel() : ViewModel() {
 
     private fun loadInitialData() {
         viewModelScope.launch {
+            loadingResId = R.string.loading_complex_list
+            loadingArgs = null
             isLoading = true
             errorMessage = null
             try {
                 complexList = repository.fetchComplexList()
-                // If successful, loading ends and overlay disappears
-                isLoading = false
             } catch (e: Exception) {
                 // If failed, keep the overlay but show error message
                 errorMessage = e.message
+            } finally {
+                isLoading = false
+            }
+        }
+    }
+
+    fun onComplexChanged(complex: String?) {
+        if (complex.isNullOrBlank()) {
+            buildingList = emptyList()
+            return
+        }
+
+        viewModelScope.launch {
+            loadingResId = R.string.loading_building_list
+            loadingArgs = complex
+            isLoading = true
+            errorMessage = null
+            try {
+                buildingList = repository.fetchBuildingList(complex)
+            } catch (e: Exception) {
+                errorMessage = e.message
+                buildingList = emptyList()
+            } finally {
                 isLoading = false
             }
         }
@@ -58,29 +92,31 @@ class LookupViewModel() : ViewModel() {
         val cUnit = unit?.takeIf { it.isNotBlank() }
 
         viewModelScope.launch {
+            loadingResId = R.string.loading_search
+            loadingArgs = null
             isLoading = true
             errorMessage = null // Clear previous errors
 
             try {
                 when (type) {
                     SearchType.PHONE -> {
-                        val targetPhone = cPhone ?: throw Exception("전화번호를 입력해주세요.")
+                        val targetPhone = cPhone ?: throw Exception("ERROR: Phone number empty")
                         searchResults.value = repository.fetchInfoByNumber(targetPhone, cComplex)
                     }
                     SearchType.KEYWORD -> {
-                        val targetKeyword = cKeyword ?: throw Exception("키워드를 입력해주세요.")
+                        val targetKeyword = cKeyword ?: throw Exception("ERROR: Keyword empty")
                         searchResults.value = repository.searchByKeyword(targetKeyword, cComplex, cBld)
                     }
                     SearchType.UNIT -> {
                         // Unit search requires both complex and building
-                        val targetComplex = cComplex ?: throw Exception("단지를 선택해주세요.")
-                        val targetBld = cBld ?: throw Exception("동 번호를 입력해주세요.")
+                        val targetComplex = cComplex ?: throw Exception("ERROR: Complex empty")
+                        val targetBld = cBld ?: throw Exception("ERROR: Bld empty")
                         searchResults.value = repository.searchByUnit(targetComplex, targetBld, cUnit)
                     }
                 }
             } catch (e: Exception) {
                 // Handle error (e.g., Network timeout, API error)
-                errorMessage = e.message ?: "알 수 없는 오류가 발생했습니다."
+                errorMessage = e.message ?: "ERROR: Unknown error"
             } finally {
                 isLoading = false
             }

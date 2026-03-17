@@ -16,8 +16,8 @@ android {
         applicationId = "cc.darak.aptanywhere"
         minSdk = 33
         targetSdk = 36
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 11
+        versionName = "2.1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -42,6 +42,7 @@ android {
 
 dependencies {
     implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.core.splashscreen)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.activity.compose.v190)
@@ -59,11 +60,11 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.runtime)
     implementation(libs.androidx.security.crypto)
-    implementation(libs.okhttp)
-    implementation(libs.gson)
     implementation(libs.androidx.compose.ui.text)
     implementation(libs.androidx.compose.foundation)
     implementation(libs.androidx.ui)
+    implementation(libs.okhttp)
+    implementation(libs.gson)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

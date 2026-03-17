@@ -29,7 +29,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import cc.darak.aptanywhere.R
 import cc.darak.aptanywhere.data.model.SearchType
 import cc.darak.aptanywhere.ui.components.CommonLayout
-import cc.darak.aptanywhere.ui.components.search.lookup.ComplexSelectDropdown
+import cc.darak.aptanywhere.ui.components.search.lookup.SelectDropdown
 import cc.darak.aptanywhere.ui.components.search.lookup.StatusOverlay
 import cc.darak.aptanywhere.viewmodel.LookupViewModel
 
@@ -39,12 +39,13 @@ fun LookupScreen(
     searchType: SearchType,
     onBack: () -> Unit
 ) {
-    // Fetched complex list
+    // Fetched complex & building list
     val complexes = viewModel.complexList
+    val buildings = viewModel.buildingList
 
     // State for common fields
     var selectedComplex: String? by remember { mutableStateOf(null) }
-    var bld by remember { mutableStateOf("") }
+    var selectedBld: String? by remember { mutableStateOf(null) }
     var unit by remember { mutableStateOf("") }
 
     // State for specific fields
@@ -79,11 +80,12 @@ fun LookupScreen(
                             modifier = Modifier.fillMaxWidth(),
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone)
                         )
-                        ComplexSelectDropdown(
-                            complexList = complexes,
-                            selectedComplex = selectedComplex,
+                        SelectDropdown(
+                            optionList = complexes,
+                            selectedOption = selectedComplex,
+                            label = stringResource(R.string.label_complex),
                             isRequired = false,
-                            onComplexSelected = {selectedComplex = it }
+                            onOptionSelected = { selectedComplex = it }
                         )
                     }
                     SearchType.KEYWORD -> {
@@ -94,33 +96,48 @@ fun LookupScreen(
                             modifier = Modifier.fillMaxWidth(),
                             placeholder = { Text(stringResource(R.string.label_keyword_placeholder)) }
                         )
-                        ComplexSelectDropdown(
-                            complexList = complexes,
-                            selectedComplex = selectedComplex,
+                        SelectDropdown(
+                            optionList = complexes,
+                            selectedOption = selectedComplex,
+                            label = stringResource(R.string.label_complex),
                             isRequired = false,
-                            onComplexSelected = {selectedComplex = it }
+                            onOptionSelected = {
+                                selectedComplex = it
+                                selectedBld = null
+                                viewModel.onComplexChanged(it)
+                            }
                         )
-                        OutlinedTextField(
-                            value = bld,
-                            onValueChange = { bld = it },
-                            label = { Text(stringResource(R.string.label_bld_optional)) },
-                            modifier = Modifier.fillMaxWidth()
+                        SelectDropdown(
+                            optionList = buildings,
+                            selectedOption = selectedBld,
+                            label = stringResource(R.string.label_bld),
+                            isRequired = false,
+                            onOptionSelected = { selectedBld = it }
                         )
                     }
                     SearchType.UNIT -> {
-                        ComplexSelectDropdown(
-                            complexList = complexes,
-                            selectedComplex = selectedComplex,
+                        SelectDropdown(
+                            optionList = complexes,
+                            selectedOption = selectedComplex,
+                            label = stringResource(R.string.label_complex),
                             isRequired = true,
-                            onComplexSelected = {selectedComplex = it }
+                            onOptionSelected = {
+                                selectedComplex = it
+                                selectedBld = null
+                                viewModel.onComplexChanged(it)
+                            }
                         )
-                        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                            OutlinedTextField(
-                                value = bld,
-                                onValueChange = { bld = it },
-                                label = { Text(stringResource(R.string.label_bld_required)) },
-                                modifier = Modifier.weight(1f)
-                            )
+                        SelectDropdown(
+                            optionList = buildings,
+                            selectedOption = selectedBld,
+                            label = stringResource(R.string.label_bld),
+                            isRequired = false,
+                            onOptionSelected = { selectedBld = it }
+                        )
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
                             OutlinedTextField(
                                 value = unit,
                                 onValueChange = { unit = it },
@@ -142,7 +159,7 @@ fun LookupScreen(
                             phone = phoneNumber,
                             keyword = keyword,
                             complex = selectedComplex,
-                            bld = bld,
+                            bld = selectedBld,
                             unit = unit
                         )
                     },
@@ -153,7 +170,7 @@ fun LookupScreen(
                         phone = phoneNumber,
                         keyword = keyword,
                         complex = selectedComplex,
-                        bld = bld
+                        bld = selectedBld ?: ""
                     )
                 ) {
                     Text(stringResource(R.string.btn_lookup), style = MaterialTheme.typography.titleMedium)
@@ -163,7 +180,6 @@ fun LookupScreen(
             // Loading overlay
             StatusOverlay(
                 isLoading = viewModel.isLoading,
-                loadingMessage = stringResource(R.string.loading_complex_list),
                 errorMessage = viewModel.errorMessage,
                 onDismiss = onBack // Finish activity when clicked
             )

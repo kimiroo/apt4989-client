@@ -15,6 +15,8 @@
     <string name="label_not_selected">(선택 안함)</string>
     <string name="label_blank">(공백)</string>
     <string name="label_no_data">(정보 없음)</string>
+    <string name="label_required">필수</string>
+    <string name="label_optional">선택</string>
     <string name="error_occurred">오류 발생:\n%1$s</string>
 
     <!-- Buttons -->
@@ -40,14 +42,14 @@
 
     <!-- Lookup -->
     <string name="loading_complex_list">단지 목록을 불러오는 중…</string>
-    <string name="label_complex_required">단지 선택 (필수)</string>
-    <string name="label_complex_optional">단지 선택 (선택)</string>
-    <string name="label_complex_not_se">단지 선택 (선택)</string>
+    <string name="loading_building_list">%1$s의 동 목록을 불러오는 중…</string>
+    <string name="loading_search">주어진 조건으로 검색하는 중…</string>
+    <string name="loading_default">잠시만 기다려 주세요…</string>
+    <string name="label_complex">단지</string>
     <string name="label_phone_required">전화번호 (필수)</string>
     <string name="label_keyword_required">키워드 (필수)</string>
     <string name="label_keyword_placeholder">이름, 메모 등</string>
-    <string name="label_bld_required">동 (필수)</string>
-    <string name="label_bld_optional">동 (선택)</string>
+    <string name="label_bld">동</string>
     <string name="label_unit_optional">호수 (선택)</string>
     <string name="dialog_title_no_result">검색 결과 없음</string>
     <string name="dialog_message_no_result">검색 결과가 없습니다.</string>
@@ -117,19 +119,19 @@
     <string name="btn_allow">설정</string>
 
     <!-- Notification -->
-    <string name="notification_overlay_service_name">오버레이 서비스</string>
-    <string name="notification_overlay_service_description">오버레이 서비스</string>
-    <string name="notification_overlay_service_title">오버레이 서비스</string>
-    <string name="notification_overlay_service_message">오버레이 서비스</string>
+    <string name="notification_overlay_service_name">실시간 모니터링 서비스</string>
+    <string name="notification_overlay_service_description">전화나 문자가 왔을 때 정보를 화면에 띄워주는 핵심 서비스의 알림입니다.</string>
+    <string name="notification_overlay_service_title">실시간 모니터링 중</string>
+    <string name="notification_overlay_service_message">전화 및 문자를 실시간으로 모니터링 중입니다.</string>
 
-    <string name="notification_error_name">오류 알림</string>
-    <string name="notification_error_description">오류가 발생했을 때 알림을 띄웁니다</string>
+    <string name="notification_error_name">서비스 오류 알림</string>
+    <string name="notification_error_description">조회 실패 또는 앱 실행 중 발생한 문제를 알려드립니다.</string>
     <string name="notification_error_title">오류 발생</string>
     <string name="notification_error_message_lookup">결과를 불러오는 중 오류가 발생했습니다:\n%1$s</string>
     <string name="notification_error_message_overlay">오버레이 표시 중 오류가 발생했습니다:\n%1$s</string>
 
-    <string name="notification_lookup_result_name">검색 결과</string>
-    <string name="notification_lookup_result_description">전화 또는 문자 수신시 검색 결과를 보여줍니다.</string>
+    <string name="notification_lookup_result_name">조회 결과 알림</string>
+    <string name="notification_lookup_result_description">수신된 번호의 정보를 표시합니다.</string>
     <string name="notification_lookup_result_title">%1$s 검색 결과</string>
     <string name="notification_lookup_result_message">%1$s 검색 결과: %2$d건 검색됨</string>
     <string name="notification_lookup_result_line">[%1$s] %2$s %3$s동 %4$s호</string>

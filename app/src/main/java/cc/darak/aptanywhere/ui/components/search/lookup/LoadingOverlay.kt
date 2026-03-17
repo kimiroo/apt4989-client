@@ -25,17 +25,27 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import cc.darak.aptanywhere.R
+import cc.darak.aptanywhere.viewmodel.LookupViewModel
 
 @Composable
 fun StatusOverlay(
+    viewModel: LookupViewModel = viewModel(),
     isLoading: Boolean,
-    loadingMessage: String,
     errorMessage: String?,
     onDismiss: () -> Unit
 ) {
     // Show overlay if loading is active OR there's an error
     if (isLoading || errorMessage != null) {
+
+        // Dynamically set loading message
+        val loadingMessage = if (viewModel.loadingArgs != null) {
+            stringResource(viewModel.loadingResId, viewModel.loadingArgs!!)
+        } else {
+            stringResource(viewModel.loadingResId)
+        }
+
         Box(
             modifier = Modifier
                 .fillMaxSize()
