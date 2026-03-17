@@ -15,9 +15,10 @@
     <string name="error_occurred">오류 발생:\n%1$s</string>
 
     <!-- Buttons -->
+    <string name="btn_ok">확인</string>
     <string name="btn_close">닫기</string>
     <string name="btn_back">뒤로 가기</string>
-    <string name="btn_continue">뒤로 가기</string>
+    <string name="btn_continue">계속하기</string>
     <string name="btn_cancel">뒤로 가기</string>
 
     <!-- Overlay -->
@@ -45,6 +46,8 @@
     <string name="label_bld_required">동 (필수)</string>
     <string name="label_bld_optional">동 (선택)</string>
     <string name="label_unit_optional">동 (선택)</string>
+    <string name="dialog_title_no_result">검색 결과 없음</string>
+    <string name="dialog_message_no_result">검색 결과가 없습니다.</string>
     <string name="btn_lookup">조회하기</string>
 
     <!-- Search Result -->
