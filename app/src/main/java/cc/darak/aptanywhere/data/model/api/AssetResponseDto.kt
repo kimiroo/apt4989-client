@@ -1,8 +1,8 @@
 package cc.darak.aptanywhere.data.model.api
 
-import cc.darak.aptanywhere.data.model.PropertyInfo
+import cc.darak.aptanywhere.data.model.AssetInfo
 
-data class PropertyDto(
+data class AssetDto(
     val complex: String?,
     val bld: String?,
     val unit: String?,
@@ -20,8 +20,8 @@ data class PropertyDto(
 /**
  * Extension function to convert API DTO to App Domain model
  */
-fun PropertyDto.toDomain(): PropertyInfo {
-    return PropertyInfo(
+fun AssetDto.toDomain(): AssetInfo {
+    return AssetInfo(
         complex = this.complex ?: "(정보 없음)",
         bld = this.bld ?: "(정보 없음)",
         unit = this.unit ?: "(정보 없음)",

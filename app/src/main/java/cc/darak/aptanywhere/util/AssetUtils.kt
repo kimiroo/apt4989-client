@@ -1,11 +1,11 @@
 package cc.darak.aptanywhere.util
 
-import cc.darak.aptanywhere.data.model.PropertyInfo
+import cc.darak.aptanywhere.data.model.AssetInfo
 
 /**
- * Utility functions for property data processing
+ * Utility functions for asset data processing
  */
-object PropertyUtils {
+object AssetUtils {
 
     /**
      * Sanitizes a string by removing all non-digit characters
@@ -32,14 +32,14 @@ object PropertyUtils {
     /**
      * Identifies if the number belongs to the owner
      */
-    fun isOwner(info: PropertyInfo, number: String): Boolean {
+    fun isOwner(info: AssetInfo, number: String): Boolean {
         return isNumberInString(number, info.ownerNumber)
     }
 
     /**
      * Identifies if the number belongs to the tenant
      */
-    fun isTenant(info: PropertyInfo, number: String): Boolean {
+    fun isTenant(info: AssetInfo, number: String): Boolean {
         return isNumberInString(number, info.tenantNumber)
     }
 }

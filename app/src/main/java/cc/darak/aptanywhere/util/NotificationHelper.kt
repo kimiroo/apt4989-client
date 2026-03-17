@@ -6,13 +6,14 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import androidx.compose.material3.contentColorFor
 import androidx.core.app.NotificationCompat
 import cc.darak.aptanywhere.R
 import cc.darak.aptanywhere.data.model.ChannelID
-import cc.darak.aptanywhere.data.model.PropertyInfo
+import cc.darak.aptanywhere.data.model.AssetInfo
+import cc.darak.aptanywhere.data.model.IntentExtraKeys
 import cc.darak.aptanywhere.ui.main.MainActivity
-import cc.darak.aptanywhere.util.PropertyUtils.isOwner
+import cc.darak.aptanywhere.ui.search.result.ResultListActivity
+import cc.darak.aptanywhere.util.AssetUtils.isOwner
 
 class NotificationHelper(private val context: Context) {
 
@@ -69,7 +70,7 @@ class NotificationHelper(private val context: Context) {
      */
     fun createLookupResultNotification(
         number: String,
-        propertyList: List<PropertyInfo>? = null
+        assetList: List<AssetInfo>? = null
     ): Notification {
         // 1. Ensure the notification channel exists
         createChannel(
@@ -89,7 +90,7 @@ class NotificationHelper(private val context: Context) {
         val message = context.getString(
             R.string.notification_lookup_result_message,
             formattedNumber,
-            propertyList?.size ?: 0
+            assetList?.size ?: 0
         )
 
         // 3. Initialize the builder
@@ -99,16 +100,16 @@ class NotificationHelper(private val context: Context) {
             .setSmallIcon(R.drawable.ic_apartment)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setAutoCancel(true)
-            .setContentIntent(createDetailPendingIntent(propertyList ?: emptyList()))
+            .setContentIntent(createDetailPendingIntent(assetList ?: emptyList()))
 
-        // 4. Conditionally apply InboxStyle if propertyList is not empty
-        if (!propertyList.isNullOrEmpty()) {
+        // 4. Conditionally apply InboxStyle if assetList is not empty
+        if (!assetList.isNullOrEmpty()) {
             val inboxStyle = NotificationCompat.InboxStyle()
                 //.setBigContentTitle("title") //context.getString(R.string.notification_search_result_detail_title)
                 //.setSummaryText("summary") //context.getString(R.string.notification_search_result_summary)
 
             // Add up to 7 lines for the preview
-            propertyList.take(7).forEach { info ->
+            assetList.take(7).forEach { info ->
                 val personType = if (isOwner(info, number)) {
                     context.getString(R.string.label_owner)
                 } else {
@@ -153,7 +154,6 @@ class NotificationHelper(private val context: Context) {
      * Create a PendingIntent to open the app's main activity.
      */
     private fun createPendingIntent(): PendingIntent {
-        // Replace 'MainActivity::class.java' with your target activity
         val intent = Intent(context, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
@@ -167,11 +167,11 @@ class NotificationHelper(private val context: Context) {
         )
     }
 
-    fun createDetailPendingIntent(propertyList: List<PropertyInfo>): PendingIntent {
-        val intent = Intent(context, MainActivity::class.java).apply { //TODO
+    fun createDetailPendingIntent(assetList: List<AssetInfo>): PendingIntent {
+        val intent = Intent(context, ResultListActivity::class.java).apply {
             // Wrap the list in an ArrayList if it isn't one already
-            val arrayList = ArrayList(propertyList)
-            putParcelableArrayListExtra("PROPERTY_LIST", arrayList)
+            val arrayList = ArrayList(assetList)
+            putParcelableArrayListExtra(IntentExtraKeys.ASSET_LIST, arrayList)
 
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }

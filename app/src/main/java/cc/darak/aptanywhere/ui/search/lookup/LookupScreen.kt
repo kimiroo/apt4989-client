@@ -29,8 +29,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import cc.darak.aptanywhere.R
 import cc.darak.aptanywhere.data.model.SearchType
 import cc.darak.aptanywhere.ui.components.CommonLayout
-import cc.darak.aptanywhere.ui.components.lookup.ComplexSelectDropdown
-import cc.darak.aptanywhere.ui.components.lookup.StatusOverlay
+import cc.darak.aptanywhere.ui.components.search.lookup.ComplexSelectDropdown
+import cc.darak.aptanywhere.ui.components.search.lookup.StatusOverlay
 import cc.darak.aptanywhere.viewmodel.LookupViewModel
 
 @Composable
@@ -43,7 +43,7 @@ fun LookupScreen(
     val complexes = viewModel.complexList
 
     // State for common fields
-    var selectedComplex: String? by remember { mutableStateOf("") }
+    var selectedComplex: String? by remember { mutableStateOf(null) }
     var bld by remember { mutableStateOf("") }
     var unit by remember { mutableStateOf("") }
 
@@ -58,7 +58,8 @@ fun LookupScreen(
             SearchType.UNIT -> stringResource(R.string.title_lookup_unit)
         },
         showBack = true,
-        onBackClick = onBack
+        onBackClick = onBack,
+        applySidePadding = true
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
             Column(
@@ -134,11 +135,26 @@ fun LookupScreen(
 
                 // 3. Search Button
                 Button(
-                    onClick = {},
-                    //onClick = { performSearch() },
+                    onClick = {
+                        // Pass all current UI states to ViewModel
+                        viewModel.performSearch(
+                            type = searchType,
+                            phone = phoneNumber,
+                            keyword = keyword,
+                            complex = selectedComplex,
+                            bld = bld,
+                            unit = unit
+                        )
+                    },
                     modifier = Modifier.fillMaxWidth().height(56.dp),
-                    shape = RoundedCornerShape(12.dp)
-                    //enabled = isInputValid(searchType, phoneNumber, keyword, selectedComplex, bld)
+                    shape = RoundedCornerShape(12.dp),
+                    enabled = viewModel.isInputValid(
+                        type = searchType,
+                        phone = phoneNumber,
+                        keyword = keyword,
+                        complex = selectedComplex,
+                        bld = bld
+                    )
                 ) {
                     Text(stringResource(R.string.btn_lookup), style = MaterialTheme.typography.titleMedium)
                 }

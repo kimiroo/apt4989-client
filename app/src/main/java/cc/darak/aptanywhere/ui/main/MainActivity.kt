@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import cc.darak.aptanywhere.data.model.IntentExtraKeys
 import cc.darak.aptanywhere.service.PhoneMonitorService
 import cc.darak.aptanywhere.ui.init.InitActivity
 import cc.darak.aptanywhere.ui.search.lookup.LookupActivity
@@ -28,7 +29,7 @@ class MainActivity : ComponentActivity() {
                 MainScreen(
                     onNavigateToSearch = { type ->
                         val intent = Intent(this, LookupActivity::class.java).apply {
-                            putExtra("SEARCH_TYPE", type)
+                            putExtra(IntentExtraKeys.SEARCH_TYPE, type)
                         }
                         startActivity(intent)
                     },

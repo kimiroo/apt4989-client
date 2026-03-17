@@ -138,7 +138,8 @@ fun SettingsScreen(
     CommonLayout(
         title = stringResource(R.string.title_settings),
         showBack = true,
-        onBackClick = onBack
+        onBackClick = onBack,
+        applySidePadding = true
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
             Column(

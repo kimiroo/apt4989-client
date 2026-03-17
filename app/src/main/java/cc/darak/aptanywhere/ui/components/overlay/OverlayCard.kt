@@ -18,14 +18,13 @@ import androidx.compose.ui.unit.dp
 
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import cc.darak.aptanywhere.R
 import cc.darak.aptanywhere.data.model.UiState
 import cc.darak.aptanywhere.ui.components.ColumnedDetailRow
 import cc.darak.aptanywhere.ui.components.DetailRow
-import cc.darak.aptanywhere.util.PropertyUtils.isOwner
+import cc.darak.aptanywhere.util.AssetUtils.isOwner
 import cc.darak.aptanywhere.util.formatPhoneNumber
 
 
@@ -42,13 +41,13 @@ fun OverlayCard(
         when (state) {
             is UiState.Loading -> {
                 Text(
-                    stringResource(id = R.string.loading_data),
+                    stringResource(id = R.string.overlay_loading_data),
                     modifier = Modifier.align(Alignment.CenterHorizontally)
                 )
             }
             is UiState.NotFound -> {
                 Text(
-                    stringResource(id = R.string.no_result),
+                    stringResource(id = R.string.overlay_no_result),
                     modifier = Modifier.align(Alignment.CenterHorizontally)
                 )
             }
@@ -87,7 +86,7 @@ fun OverlayCard(
                         Spacer(modifier = Modifier.width(8.dp))
 
                         Text(
-                            text = stringResource(R.string.search_result, state.infoList.size),
+                            text = stringResource(R.string.overlay_search_result, state.infoList.size),
                             style = MaterialTheme.typography.labelSmall,
                             color = MaterialTheme.colorScheme.secondary.copy(alpha = 0.8f)
                         )
@@ -96,7 +95,7 @@ fun OverlayCard(
                     state.infoList.forEachIndexed { index, info ->
                         ExpandableRowTemplate(
                             title = stringResource(
-                                R.string.search_result_row_title,
+                                R.string.overlay_search_result_row_title,
                                 info.complex, info.bld, info.unit
                             ),
                             label = if (isOwner(info, state.number)) {

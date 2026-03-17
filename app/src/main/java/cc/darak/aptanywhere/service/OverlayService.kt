@@ -20,7 +20,7 @@ import cc.darak.aptanywhere.R
 import cc.darak.aptanywhere.data.model.NotificationID
 import cc.darak.aptanywhere.ui.components.overlay.OverlayCard
 import cc.darak.aptanywhere.data.model.UiState
-import cc.darak.aptanywhere.data.repository.PropertyRepository.fetchInfoByNumber
+import cc.darak.aptanywhere.data.repository.AssetRepository
 import cc.darak.aptanywhere.util.NotificationHelper
 import cc.darak.aptanywhere.util.PreferencesHelper.getMaxOverlayMaxHeight
 import cc.darak.aptanywhere.util.PreferencesHelper.getOverlayYOffset
@@ -39,6 +39,9 @@ class PhoneMonitorService : LifecycleService(), ViewModelStoreOwner, SavedStateR
 
     override val viewModelStore: ViewModelStore = mViewModelStore
     override val savedStateRegistry: SavedStateRegistry = mSavedStateRegistryController.savedStateRegistry
+
+    // Initialize repository
+    val repository = AssetRepository()
 
     override fun onCreate() {
         super.onCreate()
@@ -79,11 +82,11 @@ class PhoneMonitorService : LifecycleService(), ViewModelStoreOwner, SavedStateR
 
                 // 2. Direct call to the repository
                 // This runs on Dispatchers.IO internally
-                val data = fetchInfoByNumber(cleanNumber)
+                val data = repository.fetchInfoByNumber(cleanNumber)
 
                 // 3. Update UI based on the result
                 if (data.isNotEmpty()) {
-                    // Found properties: data is List<PropertyInfo>
+                    // Found assets: data is List<AssetInfo>
                     updateOverlayUI(UiState.Success(number,data))
                 } else {
                     // No properties linked to this number
@@ -188,7 +191,7 @@ class PhoneMonitorService : LifecycleService(), ViewModelStoreOwner, SavedStateR
     fun showResultNotification(state: UiState) {
         val notification = notificationHelper.createLookupResultNotification(
             number = (state as UiState.Success).number,
-            propertyList = state.infoList
+            assetList = state.infoList
         )
         // 2. Show it using the manager
         // Use a different ID (e.g., NotificationID.ERROR_ALERT) to not overwrite the service notification

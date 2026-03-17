@@ -1,21 +1,19 @@
 package cc.darak.aptanywhere.data.repository
 
-import android.util.Log
 import cc.darak.aptanywhere.App
-import cc.darak.aptanywhere.data.model.PropertyInfo
-import cc.darak.aptanywhere.data.model.api.PropertyDto
+import cc.darak.aptanywhere.data.model.AssetInfo
+import cc.darak.aptanywhere.data.model.api.AssetDto
 import cc.darak.aptanywhere.data.model.api.toDomain
 import cc.darak.aptanywhere.util.PreferencesHelper
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Request
 
-object PropertyRepository {
+class AssetRepository {
     private val authInterceptor = Interceptor { chain ->
         val originalRequest = chain.request()
 
@@ -61,11 +59,11 @@ object PropertyRepository {
     suspend fun fetchInfoByNumber(
         number: String,
         complex: String? = null
-    ): List<PropertyInfo> {
+    ): List<AssetInfo> {
         val params = mutableMapOf("number" to number)
         complex?.let { params["complex"] = it }
 
-        val dtoList = executeRequest<Array<PropertyDto>>(
+        val dtoList = executeRequest<Array<AssetDto>>(
             path = "/api/v1/lookup/phone",
             params = params
         )
@@ -80,14 +78,14 @@ object PropertyRepository {
         keyword: String,
         complex: String? = null,
         bld: String? = null
-    ): List<PropertyInfo> {
+    ): List<AssetInfo> {
         // 1. Build params map with only non-null values
         val params = mutableMapOf("keyword" to keyword)
         complex?.let { params["complex"] = it }
         bld?.let { params["bld"] = it }
 
         // 2. Execute request
-        val dtoList = executeRequest<Array<PropertyDto>>(
+        val dtoList = executeRequest<Array<AssetDto>>(
             path = "/api/v1/lookup/keyword",
             params = params
         )
@@ -102,14 +100,14 @@ object PropertyRepository {
         complex: String,
         bld: String,
         unit: String? = null
-    ): List<PropertyInfo> {
+    ): List<AssetInfo> {
         // 1. Build params map with only non-null values
         val params = mutableMapOf("complex" to complex)
         params["bld"] = bld
         unit?.let { params["unit"] = it }
 
         // 2. Execute request
-        val dtoList = executeRequest<Array<PropertyDto>>(
+        val dtoList = executeRequest<Array<AssetDto>>(
             path = "/api/v1/lookup/unit",
             params = params
         )

@@ -4,7 +4,7 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class PropertyInfo(
+data class AssetInfo(
     val complex: String = "(정보 없음)",
     val bld: String = "(정보 없음)",
     val unit: String = "(정보 없음)",

@@ -1,4 +1,4 @@
-package cc.darak.aptanywhere.ui.components.lookup
+package cc.darak.aptanywhere.ui.components.search.lookup
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.DropdownMenuItem

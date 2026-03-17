@@ -40,8 +40,8 @@
 
         <activity android:name=".ui.init.InitActivity" />
         <activity android:name=".ui.search.lookup.LookupActivity" />
-        <!--<activity android:name=".ui.search.ResultListActivity" />
-        <activity android:name=".ui.search.AssetDetailActivity" />-->
+        <activity android:name=".ui.search.result.ResultListActivity" />
+        <!--<activity android:name=".ui.search.AssetDetailActivity" />-->
         <activity android:name=".ui.settings.SettingsActivity" />
 
         <receiver android:name=".receiver.CallReceiver" android:exported="true">
@@ -55,7 +55,7 @@
             android:foregroundServiceType="specialUse"
             android:exported="false">
             <property android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
-                android:value="Overlay for call information and property management" />
+                android:value="Overlay for call information and asset management" />
         </service>
 
         <service

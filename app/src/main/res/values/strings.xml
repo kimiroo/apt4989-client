@@ -21,15 +21,16 @@
     <string name="btn_cancel">뒤로 가기</string>
 
     <!-- Overlay -->
-    <string name="loading_data">데이터를 불러오는 중…</string>
-    <string name="no_result">검색 결과가 없습니다.</string>
-    <string name="search_result">(%1$d건 조회됨)</string>
-    <string name="search_result_row_title">%1$s %2$s동 %3$s호</string>
+    <string name="overlay_loading_data">데이터를 불러오는 중…</string>
+    <string name="overlay_no_result">검색 결과가 없습니다.</string>
+    <string name="overlay_search_result">(%1$d건 조회됨)</string>
+    <string name="overlay_search_result_row_title">%1$s %2$s동 %3$s호</string>
 
     <!-- Activity Names -->
     <string name="title_lookup_phone">전화번호 조회</string>
-    <string name="title_lookup_keyword">전화번호 조회</string>
+    <string name="title_lookup_keyword">키워드 조회</string>
     <string name="title_lookup_unit">동/호수 조회</string>
+    <string name="title_search_result">조회 결과</string>
     <string name="title_settings">설정</string>
     <string name="title_init">초기 설정</string>
 
@@ -45,6 +46,9 @@
     <string name="label_bld_optional">동 (선택)</string>
     <string name="label_unit_optional">동 (선택)</string>
     <string name="btn_lookup">조회하기</string>
+
+    <!-- Search Result -->
+    <string name="search_result_row_title">%1$s동 %2$s호</string>
 
     <!-- Settings -->
     <string name="toast_settings_saved">설정이 저장되었습니다.</string>
