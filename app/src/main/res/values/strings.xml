@@ -1,0 +1,42 @@
+<resources>
+    <string name="app_name">4989 모바일</string>
+
+    <!-- Common -->
+    <string name="label_owner">임대인</string>
+    <string name="label_tenant">임차인</string>
+    <string name="label_area">크기</string>
+    <string name="label_type">타입</string>
+    <string name="label_owner_name">임대인 이름</string>
+    <string name="label_tenant_name">임차인 이름</string>
+    <string name="label_remarks">비고</string>
+    <string name="label_consult_log">상담 기록</string>
+
+    <!-- Buttons -->
+    <string name="close">닫기</string>
+
+    <!-- Overlay -->
+    <string name="loading_data">데이터를 불러오는 중…</string>
+    <string name="no_result">검색 결과가 없습니다.</string>
+    <string name="error_occurred">오류 발생:\n%1$s</string>
+    <string name="search_result">(%1$d건 조회됨)</string>
+    <string name="search_result_row_title">%1$s %2$s동 %3$s호</string>
+
+    <!-- Notification -->
+    <string name="notification_overlay_service_name">오버레이 서비스</string>
+    <string name="notification_overlay_service_description">오버레이 서비스</string>
+    <string name="notification_overlay_service_title">오버레이 서비스</string>
+    <string name="notification_overlay_service_message">오버레이 서비스</string>
+
+    <string name="notification_error_name">오류 알림</string>
+    <string name="notification_error_description">오류가 발생했을 때 알림을 띄웁니다</string>
+    <string name="notification_error_title">오류 발생</string>
+    <string name="notification_error_message_lookup">결과를 불러오는 중 오류가 발생했습니다:\n%1$s</string>
+    <string name="notification_error_message_overlay">오버레이 표시 중 오류가 발생했습니다:\n%1$s</string>
+
+    <string name="notification_lookup_result_name">검색 결과</string>
+    <string name="notification_lookup_result_description">전화 또는 문자 수신시 검색 결과를 보여줍니다.</string>
+    <string name="notification_lookup_result_title">%1$s 검색 결과</string>
+    <string name="notification_lookup_result_message">%1$s 검색 결과: %2$d건 검색됨</string>
+    <string name="notification_lookup_result_line">[%1$s] %2$s %3$s동 %4$s호</string>
+
+</resources>
