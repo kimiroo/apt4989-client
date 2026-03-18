@@ -103,7 +103,8 @@ class LookupViewModel() : ViewModel() {
         keyword: String?,
         complex: String?,
         bld: String?,
-        unit: String?
+        unit: String?,
+        listingOnly: Boolean = false
     ) {
         // 1. Pre-process: Treat blank strings as
         val cPhone = phone?.takeIf { it.isNotBlank() }
@@ -125,7 +126,7 @@ class LookupViewModel() : ViewModel() {
                     }
                     SearchType.KEYWORD -> {
                         val targetKeyword = cKeyword ?: throw Exception("ERROR: Keyword empty")
-                        searchResults.value = repository.searchByKeyword(targetKeyword, cComplex, cBld)
+                        searchResults.value = repository.searchByKeyword(targetKeyword, cComplex, cBld, listingOnly)
                     }
                     SearchType.UNIT -> {
                         // Unit search requires both complex and building

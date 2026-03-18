@@ -52,6 +52,7 @@
     <string name="label_keyword_placeholder">이름, 메모 등</string>
     <string name="label_bld">동</string>
     <string name="label_unit">호수</string>
+    <string name="label_listing_only">매매, 전세, 월세 데이터만 검색</string>
     <string name="dialog_title_no_result">검색 결과 없음</string>
     <string name="dialog_message_no_result">검색 결과가 없습니다.</string>
     <string name="btn_lookup">조회하기</string>
