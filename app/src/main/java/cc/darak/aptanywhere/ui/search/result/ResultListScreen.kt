@@ -28,11 +28,11 @@ fun ResultListScreen(
         title = stringResource(R.string.title_search_result),
         showBack = true,
         applySidePadding = true,
+        isScrollable = false,
         onBackClick = onBack
     ) {
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
-            contentPadding = PaddingValues(vertical = 8.dp)
         ) {
             itemsIndexed(assetList) { index, info ->
                 AssetItem(

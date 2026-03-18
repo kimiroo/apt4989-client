@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -25,12 +26,11 @@ import cc.darak.aptanywhere.viewmodel.LookupViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 class LookupActivity : ComponentActivity() {
-
     private val viewModel: LookupViewModel by viewModels()
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
 
         // 2. Safely get SearchType from intent
         val searchType =

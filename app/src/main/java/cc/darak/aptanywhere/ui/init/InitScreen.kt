@@ -52,8 +52,6 @@ fun SetupScreen(
     val overlayGranted by viewModel.overlayGranted.collectAsState()
     val batteryGranted by viewModel.batteryGranted.collectAsState()
 
-    val scrollState = rememberScrollState()
-
     // 1. Validation Logic (Regex)
     val isUrlValid = remember(apiUrl) {
         // Simple URL regex: Starts with http/https
@@ -87,7 +85,6 @@ fun SetupScreen(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .verticalScroll(scrollState)
                     .padding(20.dp)
                     .padding(bottom = 80.dp), // Space for the fixed button
                 verticalArrangement = Arrangement.spacedBy(16.dp)

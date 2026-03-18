@@ -62,7 +62,6 @@ fun SettingsScreen(
     onBack: () -> Unit
 ) {
     val context = LocalContext.current
-    val scrollState = rememberScrollState()
 
     // API Settings
     var apiUrl by remember { mutableStateOf(PreferencesHelper.getApiUrl(App.instance)) }
@@ -139,13 +138,14 @@ fun SettingsScreen(
         title = stringResource(R.string.title_settings),
         showBack = true,
         onBackClick = onBack,
+        isScrollable = false,
         applySidePadding = true
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .verticalScroll(scrollState)
+                    .verticalScroll(rememberScrollState())
                     .padding(20.dp)
                     .padding(bottom = 100.dp),
                 verticalArrangement = Arrangement.spacedBy(24.dp)
@@ -260,7 +260,7 @@ fun SettingsScreen(
                 }
 
                 // --- Section 3: Permissions ---
-                SettingsSection(title = stringResource(R.string.title_permissions)) {
+                SettingsSection(title = stringResource(R.string.title_permissions), showDivider = false) {
                     // 1. General Permissions
                     PermissionCard(
                         title = stringResource(R.string.label_general_permissions),

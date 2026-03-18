@@ -16,7 +16,11 @@ import androidx.compose.ui.unit.dp
  * Visual wrapper for settings sections
  */
 @Composable
-fun SettingsSection(title: String, content: @Composable ColumnScope.() -> Unit) {
+fun SettingsSection(
+    title: String,
+    showDivider: Boolean = true,
+    content: @Composable ColumnScope.() -> Unit
+) {
     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
         Text(
             text = title,
@@ -24,10 +28,12 @@ fun SettingsSection(title: String, content: @Composable ColumnScope.() -> Unit) 
             color = MaterialTheme.colorScheme.primary
         )
         content()
-        HorizontalDivider(
-            modifier = Modifier.padding(top = 8.dp),
-            thickness = 0.5.dp,
-            color = DividerDefaults.color
-        )
+        if (showDivider) {
+            HorizontalDivider(
+                modifier = Modifier.padding(top = 8.dp),
+                thickness = 0.5.dp,
+                color = DividerDefaults.color
+            )
+        }
     }
 }

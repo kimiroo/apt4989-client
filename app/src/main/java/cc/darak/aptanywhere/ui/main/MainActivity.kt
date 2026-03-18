@@ -4,8 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.core.view.WindowCompat
 import cc.darak.aptanywhere.data.model.IntentExtraKeys
 import cc.darak.aptanywhere.service.PhoneMonitorService
+import cc.darak.aptanywhere.ui.components.UpdateSystemBars
 import cc.darak.aptanywhere.ui.init.InitActivity
 import cc.darak.aptanywhere.ui.search.lookup.LookupActivity
 import cc.darak.aptanywhere.ui.settings.SettingsActivity
@@ -15,6 +17,8 @@ import cc.darak.aptanywhere.util.PreferencesHelper.isSetupComplete
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        WindowCompat.setDecorFitsSystemWindows(window, false)
 
         if (!isSetupComplete(this)) {
             startActivity(Intent(this, InitActivity::class.java))
@@ -26,6 +30,8 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             AppTheme() {
+                UpdateSystemBars()
+
                 MainScreen(
                     onNavigateToSearch = { type ->
                         val intent = Intent(this, LookupActivity::class.java).apply {

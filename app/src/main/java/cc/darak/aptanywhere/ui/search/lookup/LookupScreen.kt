@@ -1,6 +1,8 @@
 package cc.darak.aptanywhere.ui.search.lookup
 
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,8 +12,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -60,6 +64,7 @@ fun LookupScreen(
         },
         showBack = true,
         onBackClick = onBack,
+        isScrollable = false,
         applySidePadding = true
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
@@ -67,6 +72,7 @@ fun LookupScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(MaterialTheme.colorScheme.background) // Use colorScheme instead of colors
+                    .verticalScroll(rememberScrollState())
                     .padding(20.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
@@ -131,7 +137,7 @@ fun LookupScreen(
                             optionList = buildings,
                             selectedOption = selectedBld,
                             label = stringResource(R.string.label_bld),
-                            isRequired = false,
+                            isRequired = true,
                             onOptionSelected = { selectedBld = it }
                         )
                         Row(

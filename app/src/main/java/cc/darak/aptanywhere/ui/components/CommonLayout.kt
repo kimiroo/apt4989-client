@@ -1,11 +1,18 @@
 package cc.darak.aptanywhere.ui.components
 
-import android.R.attr.bottom
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -26,16 +33,24 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun CommonLayout(
     title: String,
+    modifier: Modifier = Modifier, // 1. Added Modifier
     showBack: Boolean = false,
     onBackClick: () -> Unit = {},
+    isScrollable: Boolean = true,
+    scrollState: ScrollState = rememberScrollState(), // 2. Hoisted ScrollState
     applySidePadding: Boolean = false,
-    content: @Composable () -> Unit // Simplified content lambda
+    // 3. Optional: Add a slot for an action button
+    content: @Composable () -> Unit
 ) {
-
     val outerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
     val innerColor = MaterialTheme.colorScheme.background
 
+    // Note: Edge-to-edge is best handled in the Activity via enableEdgeToEdge(),
+    // but we keep the logic here if you need it scoped to this layout.
+    UpdateSystemBars()
+
     Scaffold(
+        modifier = modifier.fillMaxSize(),
         containerColor = outerColor,
         topBar = {
             TopAppBar(
@@ -43,32 +58,47 @@ fun CommonLayout(
                 navigationIcon = {
                     if (showBack) {
                         IconButton(onClick = onBackClick) {
-                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                contentDescription = "Back" // Ideally use stringResource(R.string.back)
+                            )
                         }
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color.Transparent, // Let the scaffold color show through
-                    titleContentColor = MaterialTheme.colorScheme.onSurfaceVariant
+                    containerColor = Color.Transparent,
+                    titleContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    navigationIconContentColor = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             )
-        }
-    ) { innerPadding ->
-        // The White Arched Container
-        Surface(
+        },
+        // Scaffold handles the status bar insets for the topBar automatically
+        //contentWindowInsets = WindowInsets.systemBars
+        contentWindowInsets = WindowInsets.systemBars.only(WindowInsetsSides.Top)
+    ) { paddingValues ->
+        Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top = innerPadding.calculateTopPadding()) // Only apply top padding to position below AppBar
-                .padding(horizontal = if (applySidePadding) 8.dp else 0.dp),
-            shape = RoundedCornerShape( // Distinctive arch shape
-                topStart = 28.dp,
-                topEnd = 28.dp,
-            ),
-            color = innerColor
+                .padding(paddingValues)
+                .padding(horizontal = if (applySidePadding) 8.dp else 0.dp)
+                .imePadding()
+                .navigationBarsPadding()
         ) {
-            // Inside the arch, we don't need innerPadding anymore
-            Box(modifier = Modifier.fillMaxSize()) {
-                content()
+            Surface(
+                modifier = Modifier.fillMaxSize(),
+                shape = RoundedCornerShape(28.dp),
+                color = innerColor
+            ) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .let { mod ->
+                            if (isScrollable) mod.verticalScroll(scrollState)
+                            else mod
+                        }
+                ) {
+                    content()
+                }
             }
         }
     }
