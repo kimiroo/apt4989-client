@@ -26,6 +26,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.asComposeRenderEffect
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -73,7 +75,14 @@ fun LookupScreen(
                     .fillMaxSize()
                     .background(MaterialTheme.colorScheme.background) // Use colorScheme instead of colors
                     .verticalScroll(rememberScrollState())
-                    .padding(20.dp),
+                    .padding(20.dp)
+                    .graphicsLayer {
+                        if (viewModel.isLoading || viewModel.errorMessage?.isNotBlank() == true) {
+                            renderEffect = android.graphics.RenderEffect.createBlurEffect(
+                                20f, 20f, android.graphics.Shader.TileMode.DECAL
+                            ).asComposeRenderEffect()
+                        }
+                    },
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
 
@@ -169,7 +178,9 @@ fun LookupScreen(
                             unit = unit
                         )
                     },
-                    modifier = Modifier.fillMaxWidth().height(56.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(56.dp),
                     shape = RoundedCornerShape(12.dp),
                     enabled = viewModel.isInputValid(
                         type = searchType,
