@@ -85,8 +85,11 @@ class AssetRepository {
         number: String,
         complex: String? = null
     ): List<AssetInfo> {
-        val params = mutableMapOf("number" to number)
-        complex?.let { params["complex"] = it }
+        // 1. Build params map with only non-null values
+        val params = mutableMapOf<String, String>().apply {
+            put("number", number)
+            complex?.let { put("complex", it) }
+        }
 
         val dtoList = executeRequest<Array<AssetDto>>(
             path = "/api/v1/lookup/phone",
@@ -102,12 +105,16 @@ class AssetRepository {
     suspend fun searchByKeyword(
         keyword: String,
         complex: String? = null,
-        bld: String? = null
+        bld: String? = null,
+        listingOnly: Boolean = false
     ): List<AssetInfo> {
         // 1. Build params map with only non-null values
-        val params = mutableMapOf("keyword" to keyword)
-        complex?.let { params["complex"] = it }
-        bld?.let { params["bld"] = it }
+        val params = mutableMapOf<String, String>().apply {
+            put("keyword", keyword)
+            complex?.let { put("complex", it) }
+            bld?.let { put("bld", it) }
+            put("listing_only", listingOnly.toString())
+        }
 
         // 2. Execute request
         val dtoList = executeRequest<Array<AssetDto>>(
@@ -127,9 +134,11 @@ class AssetRepository {
         unit: String? = null
     ): List<AssetInfo> {
         // 1. Build params map with only non-null values
-        val params = mutableMapOf("complex" to complex)
-        params["bld"] = bld
-        unit?.let { params["unit"] = it }
+        val params = mutableMapOf<String, String>().apply {
+            put("complex", complex)
+            put("bld", bld)
+            unit?.let { put("unit", it) }
+        }
 
         // 2. Execute request
         val dtoList = executeRequest<Array<AssetDto>>(
@@ -157,6 +166,24 @@ class AssetRepository {
      */
     suspend fun fetchBuildingList(complex: String): List<String> {
         val params = mutableMapOf("complex" to complex)
+
+        val result = executeRequest<Array<String>>(
+            path = "/api/v1/complex/buildings",
+            params = params
+        )
+
+        // Sort alphabetically for better UX in Dropdowns
+        return result?.toList()?.sorted() ?: emptyList()
+    }
+
+    /**
+     * Fetch all available unit names for a given complex and building from the server
+     */
+    suspend fun fetchUnitList(complex: String, bld: String): List<String> {
+        val params = mutableMapOf<String, String>().apply {
+            put("complex", complex)
+            put("bld", bld)
+        }
 
         val result = executeRequest<Array<String>>(
             path = "/api/v1/complex/buildings",
