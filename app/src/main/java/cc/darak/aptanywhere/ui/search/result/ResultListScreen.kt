@@ -37,7 +37,7 @@ fun ResultListScreen(
             itemsIndexed(assetList) { index, info ->
                 AssetItem(
                     info = info,
-                    isLastItem = index == assetList.size - 1,
+                    //isLastItem = index == assetList.size - 1,
                     onClick = {
                         val intent = Intent(context, AssetDetailActivity::class.java).apply {
                             putExtra(IntentExtraKeys.ASSET_INFO, info)

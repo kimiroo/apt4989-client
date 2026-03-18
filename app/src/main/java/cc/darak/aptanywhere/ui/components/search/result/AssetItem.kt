@@ -23,7 +23,6 @@ import cc.darak.aptanywhere.data.model.AssetInfo
 @Composable
 fun AssetItem(
     info: AssetInfo,
-    isLastItem: Boolean,
     onClick: () -> Unit
 ) {
     Column(
@@ -83,13 +82,10 @@ fun AssetItem(
             }
         }
 
-        // Don't draw divider for the last item inside the rounded box
-        if (!isLastItem) {
-            HorizontalDivider(
-                modifier = Modifier.padding(horizontal = 16.dp),
-                thickness = 0.5.dp,
-                color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f)
-            )
-        }
+        HorizontalDivider(
+            modifier = Modifier.padding(horizontal = 16.dp),
+            thickness = 0.5.dp,
+            color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f)
+        )
     }
 }
