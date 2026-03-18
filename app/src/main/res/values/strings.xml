@@ -43,6 +43,7 @@
     <!-- Lookup -->
     <string name="loading_complex_list">단지 목록을 불러오는 중…</string>
     <string name="loading_building_list">%1$s의 동 목록을 불러오는 중…</string>
+    <string name="loading_unit_list">%1$s동의 호수 목록을 불러오는 중…</string>
     <string name="loading_search">주어진 조건으로 검색하는 중…</string>
     <string name="loading_default">잠시만 기다려 주세요…</string>
     <string name="label_complex">단지</string>
@@ -50,7 +51,7 @@
     <string name="label_keyword_required">키워드 (필수)</string>
     <string name="label_keyword_placeholder">이름, 메모 등</string>
     <string name="label_bld">동</string>
-    <string name="label_unit_optional">호수 (선택)</string>
+    <string name="label_unit">호수</string>
     <string name="dialog_title_no_result">검색 결과 없음</string>
     <string name="dialog_message_no_result">검색 결과가 없습니다.</string>
     <string name="btn_lookup">조회하기</string>

@@ -1,12 +1,9 @@
 package cc.darak.aptanywhere.ui.search.lookup
 
-import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -46,13 +43,14 @@ fun LookupScreen(
     onBack: () -> Unit
 ) {
     // Fetched complex & building list
-    val complexes = viewModel.complexList
-    val buildings = viewModel.buildingList
+    val complexList = viewModel.complexList
+    val buildingList = viewModel.buildingList
+    val unitList = viewModel.unitList
 
     // State for common fields
     var selectedComplex: String? by remember { mutableStateOf(null) }
     var selectedBld: String? by remember { mutableStateOf(null) }
-    var unit by remember { mutableStateOf("") }
+    var selectedUnit: String? by remember { mutableStateOf(null) }
 
     // State for specific fields
     var phoneNumber by remember { mutableStateOf("") }
@@ -96,7 +94,7 @@ fun LookupScreen(
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone)
                         )
                         SelectDropdown(
-                            optionList = complexes,
+                            optionList = complexList,
                             selectedOption = selectedComplex,
                             label = stringResource(R.string.label_complex),
                             isRequired = false,
@@ -112,7 +110,7 @@ fun LookupScreen(
                             placeholder = { Text(stringResource(R.string.label_keyword_placeholder)) }
                         )
                         SelectDropdown(
-                            optionList = complexes,
+                            optionList = complexList,
                             selectedOption = selectedComplex,
                             label = stringResource(R.string.label_complex),
                             isRequired = false,
@@ -123,7 +121,7 @@ fun LookupScreen(
                             }
                         )
                         SelectDropdown(
-                            optionList = buildings,
+                            optionList = buildingList,
                             selectedOption = selectedBld,
                             label = stringResource(R.string.label_bld),
                             isRequired = false,
@@ -132,34 +130,35 @@ fun LookupScreen(
                     }
                     SearchType.UNIT -> {
                         SelectDropdown(
-                            optionList = complexes,
+                            optionList = complexList,
                             selectedOption = selectedComplex,
                             label = stringResource(R.string.label_complex),
                             isRequired = true,
                             onOptionSelected = {
                                 selectedComplex = it
                                 selectedBld = null
+                                selectedUnit = null
                                 viewModel.onComplexChanged(it)
                             }
                         )
                         SelectDropdown(
-                            optionList = buildings,
+                            optionList = buildingList,
                             selectedOption = selectedBld,
                             label = stringResource(R.string.label_bld),
                             isRequired = true,
-                            onOptionSelected = { selectedBld = it }
+                            onOptionSelected = {
+                                selectedBld = it
+                                selectedUnit = null
+                                viewModel.onBuildingChanged(selectedComplex, it)
+                            }
                         )
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(8.dp)
-                        ) {
-                            OutlinedTextField(
-                                value = unit,
-                                onValueChange = { unit = it },
-                                label = { Text(stringResource(R.string.label_unit_optional)) },
-                                modifier = Modifier.weight(1f)
-                            )
-                        }
+                        SelectDropdown(
+                            optionList = unitList,
+                            selectedOption = selectedUnit,
+                            label = stringResource(R.string.label_unit),
+                            isRequired = false,
+                            onOptionSelected = { selectedUnit = it }
+                        )
                     }
                 }
 
@@ -175,7 +174,7 @@ fun LookupScreen(
                             keyword = keyword,
                             complex = selectedComplex,
                             bld = selectedBld,
-                            unit = unit
+                            unit = selectedUnit
                         )
                     },
                     modifier = Modifier

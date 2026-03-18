@@ -168,12 +168,12 @@ class AssetRepository {
         val params = mutableMapOf("complex" to complex)
 
         val result = executeRequest<Array<String>>(
-            path = "/api/v1/complex/buildings",
+            path = "/api/v1/buildings",
             params = params
         )
 
         // Sort alphabetically for better UX in Dropdowns
-        return result?.toList()?.sorted() ?: emptyList()
+        return result?.toList()?.sortedBy { it.toIntOrNull() ?: 0 } ?: emptyList()
     }
 
     /**
@@ -186,11 +186,11 @@ class AssetRepository {
         }
 
         val result = executeRequest<Array<String>>(
-            path = "/api/v1/complex/buildings",
+            path = "/api/v1/units",
             params = params
         )
 
         // Sort alphabetically for better UX in Dropdowns
-        return result?.toList()?.sorted() ?: emptyList()
+        return result?.toList()?.sortedBy { it.toIntOrNull() ?: 0 } ?: emptyList()
     }
 }

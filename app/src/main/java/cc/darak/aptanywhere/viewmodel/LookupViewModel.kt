@@ -19,7 +19,7 @@ class LookupViewModel() : ViewModel() {
     // For dynamically loading "loading messages"
     var loadingResId by mutableIntStateOf(R.string.loading_default)
         private set
-    var loadingArgs by mutableStateOf<String?>(null)
+    var loadingArgs by mutableStateOf<List<Any>?>(null)
         private set
 
     // State variables
@@ -31,6 +31,8 @@ class LookupViewModel() : ViewModel() {
         private set
     var buildingList by mutableStateOf<List<String>>(emptyList())
         private set
+    var unitList by mutableStateOf<List<String>>(emptyList())
+        private set
     var searchResults = mutableStateOf<List<AssetInfo>?>(null)
 
     init {
@@ -39,8 +41,7 @@ class LookupViewModel() : ViewModel() {
 
     private fun loadInitialData() {
         viewModelScope.launch {
-            loadingResId = R.string.loading_complex_list
-            loadingArgs = null
+            setLoadingMessage(R.string.loading_complex_list)
             isLoading = true
             errorMessage = null
             try {
@@ -61,8 +62,7 @@ class LookupViewModel() : ViewModel() {
         }
 
         viewModelScope.launch {
-            loadingResId = R.string.loading_building_list
-            loadingArgs = complex
+            setLoadingMessage(R.string.loading_building_list, complex)
             isLoading = true
             errorMessage = null
             try {
@@ -70,6 +70,27 @@ class LookupViewModel() : ViewModel() {
             } catch (e: Exception) {
                 errorMessage = e.message
                 buildingList = emptyList()
+            } finally {
+                isLoading = false
+            }
+        }
+    }
+
+    fun onBuildingChanged(complex: String?, bld: String?) {
+        if (complex.isNullOrBlank() || bld.isNullOrBlank()) {
+            unitList = emptyList()
+            return
+        }
+
+        viewModelScope.launch {
+            setLoadingMessage(R.string.loading_unit_list, complex, bld)
+            isLoading = true
+            errorMessage = null
+            try {
+                unitList = repository.fetchUnitList(complex, bld)
+            } catch (e: Exception) {
+                errorMessage = e.message
+                unitList = emptyList()
             } finally {
                 isLoading = false
             }
@@ -92,8 +113,7 @@ class LookupViewModel() : ViewModel() {
         val cUnit = unit?.takeIf { it.isNotBlank() }
 
         viewModelScope.launch {
-            loadingResId = R.string.loading_search
-            loadingArgs = null
+            setLoadingMessage(R.string.loading_search)
             isLoading = true
             errorMessage = null // Clear previous errors
 
@@ -142,5 +162,10 @@ class LookupViewModel() : ViewModel() {
     // Reset results after navigation to prevent re-triggering
     fun consumeResults() {
         searchResults.value = null
+    }
+
+    fun setLoadingMessage(resId: Int, vararg args: Any) {
+        loadingResId = resId
+        loadingArgs = args.toList() // Convert to List<String>
     }
 }

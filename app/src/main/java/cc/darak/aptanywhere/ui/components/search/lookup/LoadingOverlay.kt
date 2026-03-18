@@ -41,11 +41,8 @@ fun StatusOverlay(
     if (isLoading || errorMessage != null) {
 
         // Dynamically set loading message
-        val loadingMessage = if (viewModel.loadingArgs != null) {
-            stringResource(viewModel.loadingResId, viewModel.loadingArgs!!)
-        } else {
-            stringResource(viewModel.loadingResId)
-        }
+        val args = viewModel.loadingArgs?.toTypedArray() ?: emptyArray()
+        val loadingMessage = stringResource(viewModel.loadingResId, *args)
 
         Box(
             modifier = Modifier
