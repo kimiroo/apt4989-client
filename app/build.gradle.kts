@@ -16,8 +16,8 @@ android {
         applicationId = "cc.darak.aptanywhere"
         minSdk = 33
         targetSdk = 36
-        versionCode = 15
-        versionName = "2.2.3"
+        versionCode = 23
+        versionName = "2.3.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
