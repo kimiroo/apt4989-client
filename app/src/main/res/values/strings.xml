@@ -85,7 +85,7 @@
     <string name="help_api_token_overwrite">기존 키가 덮어씌워집니다. 변경시에만 입력하세요.</string>
 
     <string name="title_overlay_settings">오버레이 표시 설정</string>
-    <string name="label_show_overlay">오버레이 표시 설정</string>
+    <string name="label_show_overlay">오버레이 표시</string>
     <string name="label_y_offset">시작 위치 (Y축 Offset): %1$ddp</string>
     <string name="label_max_height">최대 높이: %1$ddp</string>
     <string name="btn_reset_overlay_settings">오버레이 설정 초기화</string>
