@@ -12,13 +12,12 @@ import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import java.util.concurrent.TimeUnit
 
 class AssetRepository {
     private val authInterceptor = Interceptor { chain ->
         val originalRequest = chain.request()
 
-        // Retrieve the API Key from your helper (Use a placeholder or dummy context carefully)
-        // Since Repository is a Singleton, you'll need to pass the applicationContext once or access it globally.
         val apiKey = PreferencesHelper.getApiKey(App.instance)
 
         val newRequest = originalRequest.newBuilder()
@@ -28,9 +27,34 @@ class AssetRepository {
 
         chain.proceed(newRequest)
     }
+
+    private val retryInterceptor = Interceptor { chain ->
+        val request = chain.request()
+        var response = chain.proceed(request)
+
+        var tryCount = 0
+        val maxLimit = 3
+
+        // Retry on 5xx server errors
+        while (!response.isSuccessful && response.code in 500..599 && tryCount < maxLimit) {
+            tryCount++
+            response.close() // Prevent memory leak
+
+            val waitTime = (500 * tryCount).toLong() // Exponential Backoff
+            Thread.sleep(waitTime)
+
+            response = chain.proceed(request)
+        }
+
+        response
+    }
+
     private val client = OkHttpClient.Builder()
+        .connectTimeout(5, TimeUnit.SECONDS)
         .addInterceptor(authInterceptor)
+        .addInterceptor(retryInterceptor)
         .build()
+
     private val gson = Gson()
 
     /**
