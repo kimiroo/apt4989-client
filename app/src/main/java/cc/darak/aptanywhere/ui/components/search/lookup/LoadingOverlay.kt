@@ -49,7 +49,7 @@ fun StatusOverlay(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color.Black.copy(alpha = 0.5f))
+                .background(Color.Transparent)
                 .pointerInput(Unit) {},
             contentAlignment = Alignment.Center
         ) {
