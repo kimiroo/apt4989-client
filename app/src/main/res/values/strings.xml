@@ -141,4 +141,6 @@
     <string name="notification_lookup_result_message">%1$s 검색 결과: %2$d건 검색됨</string>
     <string name="notification_lookup_result_line">[%1$s] %2$s %3$s동 %4$s호</string>
 
+    <!-- Permission -->
+    <string name="permission_no_overlay">오버레이 표시 권한 없음</string>
 </resources>

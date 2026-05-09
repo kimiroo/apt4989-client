@@ -10,6 +10,8 @@ import android.util.Log
 
 class NotificationListener : NotificationListenerService() {
 
+    private val TAG = NotificationListener::class.java.simpleName
+
     override fun onNotificationPosted(sbn: StatusBarNotification) {
 
         val packageName = sbn.packageName
@@ -48,10 +50,10 @@ class NotificationListener : NotificationListenerService() {
 
             // 최종 결과 처리
             if (finalNumber != null) {
-                Log.d("NotiListener", "번호 획득 성공: $finalNumber")
+                Log.d(TAG, "번호 획득 성공: $finalNumber")
                 startOverlayService(finalNumber)
             } else {
-                Log.d("NotiListener", "번호 획득 실패. 이미 저장된 연락처일 수 있음.")
+                Log.d(TAG, "번호 획득 실패. 이미 저장된 연락처일 수 있음.")
                 // 필요 시 "연락처 저장으로 인해 조회가 제한됨" 알림 띄우기
             }
         }
@@ -68,7 +70,7 @@ class NotificationListener : NotificationListenerService() {
 
     private fun startOverlayService(number: String) {
         // Launch service and pass phone number
-        val serviceIntent = Intent(this, PhoneMonitorService::class.java).apply {
+        val serviceIntent = Intent(this, OverlayService::class.java).apply {
             putExtra("phone_number", number)
         }
         this.startService(serviceIntent)

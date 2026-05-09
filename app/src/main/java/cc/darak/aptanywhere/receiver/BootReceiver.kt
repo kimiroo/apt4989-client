@@ -3,8 +3,7 @@ package cc.darak.aptanywhere.receiver
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.util.Log
-import cc.darak.aptanywhere.service.PhoneMonitorService
+import cc.darak.aptanywhere.service.OverlayService
 
 class BootReceiver : BroadcastReceiver() {
 
@@ -12,7 +11,7 @@ class BootReceiver : BroadcastReceiver() {
         if (intent.action == Intent.ACTION_BOOT_COMPLETED ||
             intent.action == "android.intent.action.QUICKBOOT_POWERON") {
 
-            val serviceIntent = Intent(context, PhoneMonitorService::class.java)
+            val serviceIntent = Intent(context, OverlayService::class.java)
 
             context.startForegroundService(serviceIntent)
         }

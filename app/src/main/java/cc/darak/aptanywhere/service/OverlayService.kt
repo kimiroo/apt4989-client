@@ -2,6 +2,7 @@ package cc.darak.aptanywhere.service
 
 import android.content.Intent
 import android.graphics.PixelFormat
+import android.provider.Settings
 import android.util.Log
 import android.view.Gravity
 import android.view.WindowManager
@@ -27,7 +28,9 @@ import cc.darak.aptanywhere.util.PreferencesHelper.getOverlayYOffset
 import cc.darak.aptanywhere.util.PreferencesHelper.getShowOverlay
 import kotlinx.coroutines.launch
 
-class PhoneMonitorService : LifecycleService(), ViewModelStoreOwner, SavedStateRegistryOwner {
+class OverlayService : LifecycleService(), ViewModelStoreOwner, SavedStateRegistryOwner {
+
+    private val TAG = OverlayService::class.java.simpleName
 
     private lateinit var windowManager: WindowManager
     private lateinit var notificationHelper: NotificationHelper
@@ -121,6 +124,25 @@ class PhoneMonitorService : LifecycleService(), ViewModelStoreOwner, SavedStateR
             return
         }
 
+        if (!Settings.canDrawOverlays(this)) {
+            Log.e(TAG, "Overlay permission not granted. Skipping UI update.")
+
+            val message = getString(
+                R.string.notification_error_message_overlay,
+                getString(R.string.permission_no_overlay)
+            )
+            val notification = notificationHelper.createErrorNotification(
+                getString(R.string.notification_error_title),
+                message,
+                message
+            )
+            notificationHelper.getManager().notify(
+                notificationHelper.generateUniqueID(),
+                notification
+            )
+            return
+        }
+
         try {
             val maxHeightDp = getMaxOverlayMaxHeight(this)
 
@@ -149,13 +171,13 @@ class PhoneMonitorService : LifecycleService(), ViewModelStoreOwner, SavedStateR
                 PixelFormat.TRANSLUCENT
             ).apply {
                 gravity = Gravity.TOP
-                y = getOverlayYOffset(this@PhoneMonitorService) // Padding from top
+                y = getOverlayYOffset(this@OverlayService) // Padding from top
             }
 
             val view = ComposeView(this).apply {
-                setViewTreeLifecycleOwner(this@PhoneMonitorService)
-                setViewTreeViewModelStoreOwner(this@PhoneMonitorService)
-                setViewTreeSavedStateRegistryOwner(this@PhoneMonitorService)
+                setViewTreeLifecycleOwner(this@OverlayService)
+                setViewTreeViewModelStoreOwner(this@OverlayService)
+                setViewTreeSavedStateRegistryOwner(this@OverlayService)
 
                 setContent {
                     OverlayCard(
@@ -170,7 +192,7 @@ class PhoneMonitorService : LifecycleService(), ViewModelStoreOwner, SavedStateR
             windowManager.addView(view, layoutParams)
             overlayView = view
         } catch (e: Exception) {
-            Log.e("PhoneMonitorService", "Error updating overlay UI: ${e.message}")
+            Log.e(TAG, "Error updating overlay UI: ${e.message}")
 
             val message = getString(
                 R.string.notification_error_message_overlay,

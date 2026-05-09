@@ -6,7 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.core.view.WindowCompat
 import cc.darak.aptanywhere.data.model.IntentExtraKeys
-import cc.darak.aptanywhere.service.PhoneMonitorService
+import cc.darak.aptanywhere.service.OverlayService
 import cc.darak.aptanywhere.ui.components.UpdateSystemBars
 import cc.darak.aptanywhere.ui.init.InitActivity
 import cc.darak.aptanywhere.ui.search.lookup.LookupActivity
@@ -24,7 +24,7 @@ class MainActivity : ComponentActivity() {
             startActivity(Intent(this, InitActivity::class.java))
             finish()
         } else {
-            val intent = Intent(this, PhoneMonitorService::class.java)
+            val intent = Intent(this, OverlayService::class.java)
             startForegroundService(intent)
         }
 
