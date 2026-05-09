@@ -1,6 +1,7 @@
 package cc.darak.aptanywhere.viewmodel
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -84,16 +85,20 @@ class PermissionViewModel : ViewModel() {
         context.startActivity(intent)
     }
 
+    @SuppressLint("BatteryLife")
     fun requestIgnoreBatteryOptimizations(context: Context) {
         try {
             val intent = Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS).apply {
                 data = "package:${context.packageName}".toUri()
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }
-            ContextCompat.startActivity(context, intent, null)
+            context.startActivity(intent)
         } catch (e: Exception) {
-            // 기기마다 인텐트가 다를 수 있으므로 예외 처리
-            val intent = Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS)
-            ContextCompat.startActivity(context, intent, null)
+            // Handle cases where the intent might differ across devices
+            val intent = Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS).apply {
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+            context.startActivity(intent)
         }
     }
 }
