@@ -55,7 +55,7 @@ fun AssetItem(
                 )
                 Spacer(modifier = Modifier.height(6.dp))
                 Text(
-                    text = "${info.area} / ${info.type}",
+                    text = "${info.areaTotalPyeong} / ${info.areaExclusiveSquareMeter}",
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.secondary
                 )

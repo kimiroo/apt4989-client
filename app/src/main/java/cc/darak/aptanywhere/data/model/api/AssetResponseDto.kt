@@ -6,13 +6,12 @@ data class AssetDto(
     val complex: String?,
     val bld: String?,
     val unit: String?,
-    val area: String?,
-    val type: String?,
+    val area: AreaDto?,
     val owner: OwnerDto?,
     val tenant: TenantDto?,
     val listing: ListingDto?,
     val expirationDate: String?,
-    val features: List<String>?,
+    val features: String?,
     val consultLog: String?,
     val remarks: String?
 )
@@ -31,8 +30,8 @@ fun AssetDto.toDomain(): AssetInfo {
         bld = this.bld ?: "",
         unit = this.unit ?: "",
 
-        area = this.area.nullIfBlank(),
-        type = this.type.nullIfBlank(),
+        areaExclusiveSquareMeter = this.area?.exclusiveSquareMeter?.nullIfBlank(),
+        areaTotalPyeong = this.area?.totalPyeong?.nullIfBlank(),
 
         ownerName = this.owner?.name.nullIfBlank(),
         ownerNumber = this.owner?.number.nullIfBlank(),
@@ -50,16 +49,16 @@ fun AssetDto.toDomain(): AssetInfo {
 
         expirationDate = this.expirationDate.nullIfBlank(),
 
-        // Check both items in the list and final result
-        features = this.features
-            ?.filter { it.isNotBlank() }
-            ?.joinToString("\n")
-            .nullIfBlank(),
-
+        features = this.features.nullIfBlank(),
         consultLog = this.consultLog.nullIfBlank(),
         remarks = this.remarks.nullIfBlank()
     )
 }
+
+data class AreaDto(
+    val exclusiveSquareMeter: String?,
+    val totalPyeong: String?
+)
 
 data class OwnerDto(val name: String?, val number: String?)
 data class TenantDto(val name: String?, val number: String?)

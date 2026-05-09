@@ -43,10 +43,10 @@ fun HeaderSection(info: AssetInfo) {
             color = MaterialTheme.colorScheme.secondaryContainer,
             shape = RoundedCornerShape(8.dp)
         ) {
-            val areaText = info.area ?: stringResource(R.string.label_no_data)
-            val typeText = info.type ?: stringResource(R.string.label_no_data)
+            val areaTotalPyeongText = info.areaTotalPyeong ?: stringResource(R.string.label_no_data)
+            val areaExclusiveSquareMeterText = info.areaExclusiveSquareMeter ?: stringResource(R.string.label_no_data)
             Text(
-                text = "$areaText / $typeText",
+                text = "$areaTotalPyeongText / $areaExclusiveSquareMeterText",
                 modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp),
                 style = MaterialTheme.typography.labelLarge,
                 color = MaterialTheme.colorScheme.onSecondaryContainer

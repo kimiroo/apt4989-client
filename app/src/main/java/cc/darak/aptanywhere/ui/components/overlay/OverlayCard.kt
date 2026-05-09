@@ -106,8 +106,8 @@ fun OverlayCard(
                             isExpanded = (index == 0 && state.infoList.size == 1), // Auto expand if it's the only item
                             content = {
                                 ColumnedDetailRow(
-                                    stringResource(R.string.label_area), info.area ?: stringResource(R.string.label_no_data),
-                                    stringResource(R.string.label_type), info.type ?: stringResource(R.string.label_no_data),
+                                    stringResource(R.string.label_area_total), info.areaTotalPyeong ?: stringResource(R.string.label_no_data),
+                                    stringResource(R.string.label_area_exclusive), info.areaExclusiveSquareMeter ?: stringResource(R.string.label_no_data),
                                     stringResource(R.string.label_owner_name), info.ownerName ?: stringResource(R.string.label_no_data),
                                     stringResource(R.string.label_tenant_name), info.tenantName ?: stringResource(R.string.label_no_data)
                                 )

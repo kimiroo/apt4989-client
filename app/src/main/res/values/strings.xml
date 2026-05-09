@@ -4,8 +4,8 @@
     <!-- Common -->
     <string name="label_owner">임대인</string>
     <string name="label_tenant">임차인</string>
-    <string name="label_area">크기</string>
-    <string name="label_type">타입</string>
+    <string name="label_area_total">공급</string>
+    <string name="label_area_exclusive">전용</string>
     <string name="label_name">이름</string>
     <string name="label_contact">연락처</string>
     <string name="label_owner_name">임대인 이름</string>
