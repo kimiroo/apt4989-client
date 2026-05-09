@@ -20,41 +20,40 @@ class NotificationListener : NotificationListenerService() {
             packageName == "com.google.android.apps.messaging") {
 
             val extras = sbn.notification.extras
-            val messages = extras.getParcelableArray(Notification.EXTRA_MESSAGES)
+            val messages =
+                extras.getParcelableArray(Notification.EXTRA_MESSAGES, Bundle::class.java)
 
             var finalNumber: String? = null
 
-            // [Step 0] 메시지 배열 확인
+            // Step 0. Check message array
             if (!messages.isNullOrEmpty()) {
                 val lastMessage = messages.last() as Bundle
-                val person = lastMessage.getParcelable<Person>("sender_person")
+                val person = lastMessage.getParcelable("sender_person", Person::class.java)
 
-                // [Step 1] Person 객체에서 tel: URI 추출 시도
+                // Step 1. Try parsing URI from Person object
                 val uri = person?.uri
                 if (uri != null && uri.startsWith("tel:")) {
                     finalNumber = uri.substringAfter("tel:").replace(Regex("[^0-9]"), "")
                 }
 
-                // [Step 2] Person 객체의 이름 필드에서 번호 추출 시도 (연락처 미등록 대응)
+                // Step 2. Try parsing number from Person object's name field (In case of unregistered contact)
                 if (finalNumber == null) {
                     val name = person?.name?.toString() ?: ""
                     finalNumber = extractPhoneNumber(name)
                 }
             }
 
-            // [Step 3] 그래도 안되면 EXTRA_TITLE (알림 제목)에서 다시 시도
+            // Step 3. Try acquiring the number from the notification title (EXTRA_TITLE) if above steps fails.
             if (finalNumber == null) {
                 val title = extras.getString(Notification.EXTRA_TITLE) ?: ""
                 finalNumber = extractPhoneNumber(title)
             }
 
-            // 최종 결과 처리
             if (finalNumber != null) {
-                Log.d(TAG, "번호 획득 성공: $finalNumber")
+                Log.d(TAG, "Number acquired: $finalNumber")
                 startOverlayService(finalNumber)
             } else {
-                Log.d(TAG, "번호 획득 실패. 이미 저장된 연락처일 수 있음.")
-                // 필요 시 "연락처 저장으로 인해 조회가 제한됨" 알림 띄우기
+                Log.d(TAG, "Failed to extract incoming number; possibly filtered by system or existing contact.")
             }
         }
     }
@@ -62,10 +61,6 @@ class NotificationListener : NotificationListenerService() {
     private fun extractPhoneNumber(text: String): String? {
         val regex = Regex("""(01[016789])[-.\s]?(\d{3,4})[-.\s]?(\d{4})""")
         return regex.find(text)?.value?.replace(Regex("""[-.\s]"""), "")
-    }
-
-    private fun showGuidanceNotification(name: String) {
-        // "이미 저장된 연락처($name)라 번호 조회가 안 됩니다"라는 간단한 시스템 알림 노출
     }
 
     private fun startOverlayService(number: String) {

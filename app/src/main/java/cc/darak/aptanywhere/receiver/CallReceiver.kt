@@ -18,9 +18,10 @@ class CallReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         if (intent.action == TelephonyManager.ACTION_PHONE_STATE_CHANGED) {
             val state = intent.getStringExtra(TelephonyManager.EXTRA_STATE)
+            @Suppress("DEPRECATION")
             val number = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER)
 
-            if (state == TelephonyManager.EXTRA_STATE_RINGING && number != null) {
+            if (state == TelephonyManager.EXTRA_STATE_RINGING && !number.isNullOrEmpty()) {
                 // Launch service and pass phone number
                 val serviceIntent = Intent(context, OverlayService::class.java).apply {
                     putExtra("phone_number", number)

@@ -161,6 +161,7 @@ class OverlayService : LifecycleService(), ViewModelStoreOwner, SavedStateRegist
             // If view doesn't exist -> Create one
             windowManager = getSystemService(WINDOW_SERVICE) as WindowManager
 
+            @Suppress("DEPRECATION")
             val layoutParams = WindowManager.LayoutParams(
                 WindowManager.LayoutParams.MATCH_PARENT,
                 WindowManager.LayoutParams.WRAP_CONTENT,
