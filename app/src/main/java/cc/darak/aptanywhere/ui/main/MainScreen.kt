@@ -1,5 +1,6 @@
 package cc.darak.aptanywhere.ui.main
 
+import android.content.pm.ActivityInfo
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -32,12 +33,16 @@ import cc.darak.aptanywhere.R
 import cc.darak.aptanywhere.data.model.SearchType
 import cc.darak.aptanywhere.ui.components.CommonLayout
 import cc.darak.aptanywhere.ui.components.main.MenuCard
+import cc.darak.aptanywhere.util.LockScreenOrientation
 
 @Composable
 fun MainScreen(
     onNavigateToSearch: (SearchType) -> Unit,
     onNavigateToSettings: () -> Unit
 ) {
+
+    LockScreenOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+
     Column(
         modifier = Modifier
             .fillMaxSize()
