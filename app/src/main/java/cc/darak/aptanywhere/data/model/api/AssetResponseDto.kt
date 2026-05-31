@@ -6,6 +6,8 @@ data class AssetDto(
     val complex: String?,
     val bld: String?,
     val unit: String?,
+    val state: String?,
+    val kind: String?,
     val area: AreaDto?,
     val owner: OwnerDto?,
     val tenant: TenantDto?,
@@ -29,6 +31,9 @@ fun AssetDto.toDomain(): AssetInfo {
         complex = this.complex ?: "",
         bld = this.bld ?: "",
         unit = this.unit ?: "",
+
+        state = this.state.nullIfBlank(),
+        kind = this.kind.nullIfBlank(),
 
         areaExclusiveSquareMeter = this.area?.exclusiveSquareMeter?.nullIfBlank(),
         areaTotalPyeong = this.area?.totalPyeong?.nullIfBlank(),

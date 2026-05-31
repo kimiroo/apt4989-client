@@ -93,16 +93,27 @@ fun OverlayCard(
                     }
 
                     state.infoList.forEachIndexed { index, info ->
+
+                        val personKindText = if (isOwner(info, state.number)) {
+                            stringResource(R.string.label_owner)
+                        } else {
+                            stringResource(R.string.label_tenant)
+                        }
+
+                        val stateKindText = listOfNotNull(info.state, info.kind)
+                            .map { it.trim() }
+                            .filter { it.isNotBlank() }
+                            .joinToString("/")
+                            .takeIf { it.isNotBlank() }
+                            ?.let { "($it)" } ?: ""
+
                         ExpandableRowTemplate(
                             title = stringResource(
                                 R.string.overlay_search_result_row_title,
                                 info.complex, info.bld, info.unit
                             ),
-                            label = if (isOwner(info, state.number)) {
-                                stringResource(R.string.label_owner)
-                            } else {
-                                stringResource(R.string.label_tenant)
-                            },
+                            label = personKindText,
+                            subLabel = stateKindText,
                             isExpanded = (index == 0 && state.infoList.size == 1), // Auto expand if it's the only item
                             content = {
                                 ColumnedDetailRow(

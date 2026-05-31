@@ -1,6 +1,8 @@
 package cc.darak.aptanywhere.ui.components.search.detail
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -10,6 +12,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -39,18 +42,44 @@ fun HeaderSection(info: AssetInfo) {
         )
 
         Spacer(modifier = Modifier.height(8.dp))
-        Surface(
-            color = MaterialTheme.colorScheme.secondaryContainer,
-            shape = RoundedCornerShape(8.dp)
+        Row (
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            val areaTotalPyeongText = info.areaTotalPyeong ?: stringResource(R.string.label_no_data)
-            val areaExclusiveSquareMeterText = info.areaExclusiveSquareMeter ?: stringResource(R.string.label_no_data)
-            Text(
-                text = "$areaTotalPyeongText / $areaExclusiveSquareMeterText",
-                modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp),
-                style = MaterialTheme.typography.labelLarge,
-                color = MaterialTheme.colorScheme.onSecondaryContainer
-            )
+            // Area
+            Surface(
+                color = MaterialTheme.colorScheme.secondaryContainer,
+                shape = RoundedCornerShape(8.dp)
+            ) {
+                val areaTotalPyeongText = info.areaTotalPyeong ?: stringResource(R.string.label_no_data)
+                val areaExclusiveSquareMeterText = info.areaExclusiveSquareMeter ?: stringResource(R.string.label_no_data)
+                Text(
+                    text = "$areaTotalPyeongText / $areaExclusiveSquareMeterText",
+                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp),
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.onSecondaryContainer
+                )
+            }
+
+            // State & Kind
+            val stateKindText = listOfNotNull(info.state, info.kind)
+                .map { it.trim() }
+                .filter { it.isNotBlank() }
+                .joinToString(" / ")
+
+            if (stateKindText.isNotBlank()) {
+                Surface(
+                    color = MaterialTheme.colorScheme.secondaryContainer,
+                    shape = RoundedCornerShape(8.dp)
+                ) {
+                    Text(
+                        text = stateKindText,
+                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp),
+                        style = MaterialTheme.typography.labelLarge,
+                        color = MaterialTheme.colorScheme.onSecondaryContainer
+                    )
+                }
+            }
         }
     }
 }

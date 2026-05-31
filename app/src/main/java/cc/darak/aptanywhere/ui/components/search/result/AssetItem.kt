@@ -53,9 +53,24 @@ fun AssetItem(
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onSurface
                 )
+
                 Spacer(modifier = Modifier.height(6.dp))
+
+                val areaText = "${info.areaTotalPyeong} / ${info.areaExclusiveSquareMeter}"
+
+                val stateKindText = listOfNotNull(info.state, info.kind)
+                    .map { it.trim() }
+                    .filter { it.isNotBlank() }
+                    .joinToString(" / ")
+
+                val areaStateKindText = if (stateKindText.isBlank()) {
+                    areaText
+                } else {
+                    "$areaText\n($stateKindText)"
+                }
+
                 Text(
-                    text = "${info.areaTotalPyeong} / ${info.areaExclusiveSquareMeter}",
+                    text = areaStateKindText,
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.secondary
                 )

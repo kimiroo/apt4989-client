@@ -11,6 +11,9 @@ data class AssetInfo(
     val bld: String = "",
     val unit: String = "",
 
+    @JsonAdapter(StringToNullAdapter::class) val state: String? = null,
+    @JsonAdapter(StringToNullAdapter::class) val kind: String? = null,
+
     @JsonAdapter(StringToNullAdapter::class) val areaExclusiveSquareMeter: String? = null,
     @JsonAdapter(StringToNullAdapter::class) val areaTotalPyeong: String? = null,
 

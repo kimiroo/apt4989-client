@@ -26,11 +26,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import cc.darak.aptanywhere.data.model.api.nullIfBlank
 
 @Composable
 fun ExpandableRowTemplate(
     title: String,
     label: String? = null,
+    subLabel: String? = null,
     isExpanded: Boolean = false,
     content: @Composable (ColumnScope.() -> Unit)? = null
 ) {
@@ -56,8 +58,25 @@ fun ExpandableRowTemplate(
 
             Column(modifier = Modifier.weight(1f)) {
 
-                if (label != null) {
-                    Text(text = label, style = MaterialTheme.typography.labelSmall, color = Color.Blue)
+                Row (
+                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    if (!label.isNullOrEmpty()) {
+                        Text(
+                            text = label,
+                            style = MaterialTheme.typography.labelMedium,
+                            color = Color(0xFF3B71CA)
+                        )
+                    }
+
+                    if (!subLabel.isNullOrEmpty()) {
+                        Text(
+                            text = subLabel,
+                            style = MaterialTheme.typography.labelMedium,
+                            color = Color(0xFF619BFA)
+                        )
+                    }
                 }
 
                 Text(text = title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
