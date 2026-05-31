@@ -22,6 +22,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
@@ -47,15 +48,33 @@ fun LookupScreen(
     searchType: SearchType,
     onBack: () -> Unit
 ) {
+    LaunchedEffect(searchType) {
+        when (searchType) {
+            SearchType.PHONE -> {
+                viewModel.loadInitialData(loadState = false, loadKind = false)
+            }
+            SearchType.KEYWORD -> {
+                viewModel.loadInitialData(loadState = true, loadKind = true)
+            }
+            SearchType.UNIT -> {
+                viewModel.loadInitialData(loadState = true, loadKind = false)
+            }
+        }
+    }
+
     // Fetched complex & building list
     val complexList = viewModel.complexList
     val buildingList = viewModel.buildingList
     val unitList = viewModel.unitList
+    val stateList = viewModel.stateList
+    val kindList = viewModel.kindList
 
     // State for common fields
     var selectedComplex: String? by remember { mutableStateOf(null) }
     var selectedBld: String? by remember { mutableStateOf(null) }
     var selectedUnit: String? by remember { mutableStateOf(null) }
+    var selectedState: String? by remember { mutableStateOf(null) }
+    var selectedKind: String? by remember { mutableStateOf(null) }
 
     // State for specific fields
     var phoneNumber by remember { mutableStateOf("") }
@@ -133,6 +152,20 @@ fun LookupScreen(
                             isRequired = false,
                             onOptionSelected = { selectedBld = it }
                         )
+                        SelectDropdown(
+                            optionList = stateList,
+                            selectedOption = selectedState,
+                            label = stringResource(R.string.label_filter_state),
+                            isRequired = false,
+                            onOptionSelected = { selectedState = it }
+                        )
+                        SelectDropdown(
+                            optionList = kindList,
+                            selectedOption = selectedKind,
+                            label = stringResource(R.string.label_filter_kind),
+                            isRequired = false,
+                            onOptionSelected = { selectedKind = it }
+                        )
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -182,6 +215,20 @@ fun LookupScreen(
                             isRequired = false,
                             onOptionSelected = { selectedUnit = it }
                         )
+                        SelectDropdown(
+                            optionList = stateList,
+                            selectedOption = selectedState,
+                            label = stringResource(R.string.label_filter_state),
+                            isRequired = false,
+                            onOptionSelected = { selectedState = it }
+                        )
+                        SelectDropdown(
+                            optionList = kindList,
+                            selectedOption = selectedKind,
+                            label = stringResource(R.string.label_filter_kind),
+                            isRequired = false,
+                            onOptionSelected = { selectedKind = it }
+                        )
                     }
                 }
 
@@ -198,6 +245,8 @@ fun LookupScreen(
                             complex = selectedComplex,
                             bld = selectedBld,
                             unit = selectedUnit,
+                            state = selectedState,
+                            kind = selectedKind,
                             listingOnly = listingOnly
                         )
                     },

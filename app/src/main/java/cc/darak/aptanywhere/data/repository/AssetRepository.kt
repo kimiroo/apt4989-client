@@ -106,6 +106,8 @@ class AssetRepository {
         keyword: String,
         complex: String? = null,
         bld: String? = null,
+        state: String? = null,
+        kind: String? = null,
         listingOnly: Boolean = false
     ): List<AssetInfo> {
         // 1. Build params map with only non-null values
@@ -113,6 +115,8 @@ class AssetRepository {
             put("keyword", keyword)
             complex?.let { put("complex", it) }
             bld?.let { put("bld", it) }
+            state?.let { put("state", it) }
+            kind?.let { put("kind", it) }
             put("listing_only", listingOnly.toString())
         }
 
@@ -131,13 +135,17 @@ class AssetRepository {
     suspend fun searchByUnit(
         complex: String,
         bld: String,
-        unit: String? = null
+        unit: String? = null,
+        state: String? = null,
+        kind: String? = null
     ): List<AssetInfo> {
         // 1. Build params map with only non-null values
         val params = mutableMapOf<String, String>().apply {
             put("complex", complex)
             put("bld", bld)
             unit?.let { put("unit", it) }
+            state?.let { put("state", it) }
+            kind?.let { put("kind", it) }
         }
 
         // 2. Execute request
@@ -188,6 +196,32 @@ class AssetRepository {
         val result = executeRequest<Array<String>>(
             path = "/api/v1/units",
             params = params
+        )
+
+        // Sort alphabetically for better UX in Dropdowns
+        return result?.toList()?.sortedBy { it.toIntOrNull() ?: 0 } ?: emptyList()
+    }
+
+    /**
+     * Fetch all available asset states from the server
+     */
+    suspend fun fetchStateList(): List<String> {
+
+        val result = executeRequest<Array<String>>(
+            path = "/api/v1/states"
+        )
+
+        // Sort alphabetically for better UX in Dropdowns
+        return result?.toList()?.sortedBy { it.toIntOrNull() ?: 0 } ?: emptyList()
+    }
+
+    /**
+     * Fetch all available asset kinds from the server
+     */
+    suspend fun fetchKindList(): List<String> {
+
+        val result = executeRequest<Array<String>>(
+            path = "/api/v1/kinds"
         )
 
         // Sort alphabetically for better UX in Dropdowns

@@ -11,6 +11,7 @@ import cc.darak.aptanywhere.R
 import cc.darak.aptanywhere.data.model.AssetInfo
 import cc.darak.aptanywhere.data.model.SearchType
 import cc.darak.aptanywhere.data.repository.AssetRepository
+import kotlinx.coroutines.async
 
 class LookupViewModel() : ViewModel() {
 
@@ -33,19 +34,27 @@ class LookupViewModel() : ViewModel() {
         private set
     var unitList by mutableStateOf<List<String>>(emptyList())
         private set
+    var stateList by mutableStateOf<List<String>>(emptyList())
+        private set
+    var kindList by mutableStateOf<List<String>>(emptyList())
+        private set
     var searchResults = mutableStateOf<List<AssetInfo>?>(null)
 
-    init {
-        loadInitialData()
-    }
-
-    private fun loadInitialData() {
+    fun loadInitialData(loadState: Boolean = false, loadKind: Boolean = false) {
         viewModelScope.launch {
             setLoadingMessage(R.string.loading_complex_list)
             isLoading = true
             errorMessage = null
             try {
-                complexList = repository.fetchComplexList()
+                // Start all three requests simultaneously
+                val complexDeferred = async { repository.fetchComplexList() }
+                val stateDeferred = if (loadState) async { repository.fetchStateList() } else null
+                val kindDeferred = if (loadKind) async { repository.fetchKindList() } else null
+
+                // Wait for all results to come back
+                complexList = complexDeferred.await()
+                stateList = stateDeferred?.await() ?: emptyList()
+                kindList = kindDeferred?.await() ?: emptyList()
             } catch (e: Exception) {
                 // If failed, keep the overlay but show error message
                 errorMessage = e.message
@@ -104,6 +113,8 @@ class LookupViewModel() : ViewModel() {
         complex: String?,
         bld: String?,
         unit: String?,
+        state: String?,
+        kind: String?,
         listingOnly: Boolean = false
     ) {
         // 1. Pre-process: Treat blank strings as
@@ -112,6 +123,8 @@ class LookupViewModel() : ViewModel() {
         val cComplex = complex?.takeIf { it.isNotBlank() }
         val cBld = bld?.takeIf { it.isNotBlank() }
         val cUnit = unit?.takeIf { it.isNotBlank() }
+        val cState = state?.takeIf { it.isNotBlank() }
+        val cKind = kind?.takeIf { it.isNotBlank() }
 
         viewModelScope.launch {
             setLoadingMessage(R.string.loading_search)
@@ -126,13 +139,26 @@ class LookupViewModel() : ViewModel() {
                     }
                     SearchType.KEYWORD -> {
                         val targetKeyword = cKeyword ?: throw Exception("ERROR: Keyword empty")
-                        searchResults.value = repository.searchByKeyword(targetKeyword, cComplex, cBld, listingOnly)
+                        searchResults.value = repository.searchByKeyword(
+                            targetKeyword,
+                            cComplex,
+                            cBld,
+                            cState,
+                            cKind,
+                            listingOnly
+                        )
                     }
                     SearchType.UNIT -> {
                         // Unit search requires both complex and building
                         val targetComplex = cComplex ?: throw Exception("ERROR: Complex empty")
                         val targetBld = cBld ?: throw Exception("ERROR: Bld empty")
-                        searchResults.value = repository.searchByUnit(targetComplex, targetBld, cUnit)
+                        searchResults.value = repository.searchByUnit(
+                            targetComplex,
+                            targetBld,
+                            cUnit,
+                            cState,
+                            cKind
+                        )
                     }
                 }
             } catch (e: Exception) {
