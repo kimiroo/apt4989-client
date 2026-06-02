@@ -103,7 +103,7 @@ class AssetRepository {
      * Keyword search with optional filters (complex, bld)
      */
     suspend fun searchByKeyword(
-        keyword: String,
+        keyword: String? = null,
         complex: String? = null,
         bld: String? = null,
         state: String? = null,
@@ -112,7 +112,7 @@ class AssetRepository {
     ): List<AssetInfo> {
         // 1. Build params map with only non-null values
         val params = mutableMapOf<String, String>().apply {
-            put("keyword", keyword)
+            keyword?.let { put("keyword", it) }
             complex?.let { put("complex", it) }
             bld?.let { put("bld", it) }
             state?.let { put("state", it) }

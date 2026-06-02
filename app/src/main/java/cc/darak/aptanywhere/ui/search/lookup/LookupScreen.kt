@@ -38,6 +38,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import cc.darak.aptanywhere.R
 import cc.darak.aptanywhere.data.model.SearchType
 import cc.darak.aptanywhere.ui.components.CommonLayout
+import cc.darak.aptanywhere.ui.components.search.lookup.HelperText
 import cc.darak.aptanywhere.ui.components.search.lookup.SelectDropdown
 import cc.darak.aptanywhere.ui.components.search.lookup.StatusOverlay
 import cc.darak.aptanywhere.viewmodel.LookupViewModel
@@ -183,6 +184,7 @@ fun LookupScreen(
                                 style = MaterialTheme.typography.bodyMedium
                             )
                         }
+                        HelperText()
                     }
                     SearchType.UNIT -> {
                         SelectDropdown(
@@ -259,7 +261,9 @@ fun LookupScreen(
                         phone = phoneNumber,
                         keyword = keyword,
                         complex = selectedComplex,
-                        bld = selectedBld ?: ""
+                        bld = selectedBld ?: "",
+                        state = selectedState,
+                        kind = selectedKind
                     )
                 ) {
                     Text(stringResource(R.string.btn_lookup), style = MaterialTheme.typography.titleMedium)

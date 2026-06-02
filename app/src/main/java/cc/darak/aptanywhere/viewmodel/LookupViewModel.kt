@@ -138,9 +138,8 @@ class LookupViewModel() : ViewModel() {
                         searchResults.value = repository.fetchInfoByNumber(targetPhone, cComplex)
                     }
                     SearchType.KEYWORD -> {
-                        val targetKeyword = cKeyword ?: throw Exception("ERROR: Keyword empty")
                         searchResults.value = repository.searchByKeyword(
-                            targetKeyword,
+                            cKeyword,
                             cComplex,
                             cBld,
                             cState,
@@ -175,12 +174,16 @@ class LookupViewModel() : ViewModel() {
         phone: String,
         keyword: String,
         complex: String?,
-        bld: String
+        bld: String,
+        state: String?,
+        kind: String?
     ): Boolean {
         return when (type) {
             SearchType.PHONE -> phone.trim().length >= 4
 
-            SearchType.KEYWORD -> keyword.trim().isNotBlank()
+            SearchType.KEYWORD -> {
+                keyword.trim().isNotBlank() || !state.isNullOrBlank() || !kind.isNullOrBlank()
+            }
 
             SearchType.UNIT -> complex != null && bld.trim().isNotBlank()
         }
